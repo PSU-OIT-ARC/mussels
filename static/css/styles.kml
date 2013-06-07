@@ -1,31 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://www.opengis.net/kml/2.0">
-<Document>
-{% for row in rows %}
-    <Placemark>
-        <name>Monitoring station at {{ row.waterbody }}</name>
-        <description><![CDATA[<b>Status:</b> {{ row.status }} 
-        <br />
-        <b>Substrate:</b> {{ row.substrate_type }}
-        <br />
-        {% if row.date_checked %}
-            <b>Date Checked:</b> {{ row.date_checked }}
-            <br />
-        {% endif %}
-        {% if row.description %}
-            <b>Description:</b> {{ row.description }}
-            <br />
-        {% endif %}
-        <b>Provider:</b> {{ row.agency }}
-        <br />
-        ]]></description>
-        <styleUrl>#{{ row.style }}</styleUrl>
-        {{ row.the_geom|safe }}
-    </Placemark>
-{% endfor %}
-
-
-
 <StyleMap id="both_artificial">
 	<Pair>
 		<key>normal</key>
@@ -39,7 +11,7 @@
 
 <Style id="both_artificial_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_artificial.png</href>
 		</Icon>
@@ -52,7 +24,7 @@
 
 <Style id="both_artificial_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_artificial.png</href>
 		</Icon>
@@ -76,7 +48,7 @@
 
 <Style id="both_natural_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_natural.png</href>
 		</Icon>
@@ -89,7 +61,7 @@
 
 <Style id="both_natural_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_natural.png</href>
 		</Icon>
@@ -113,7 +85,7 @@
 
 <Style id="both_other_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_other.png</href>
 		</Icon>
@@ -126,7 +98,7 @@
 
 <Style id="both_other_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_other.png</href>
 		</Icon>
@@ -150,7 +122,7 @@
 
 <Style id="both_plankton_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_plankton.png</href>
 		</Icon>
@@ -163,7 +135,7 @@
 
 <Style id="both_plankton_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_plankton.png</href>
 		</Icon>
@@ -187,7 +159,7 @@
 
 <Style id="both_rov_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_rov.png</href>
 		</Icon>
@@ -200,7 +172,7 @@
 
 <Style id="both_rov_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_rov.png</href>
 		</Icon>
@@ -224,7 +196,7 @@
 
 <Style id="both_scuba_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_scuba.png</href>
 		</Icon>
@@ -237,7 +209,7 @@
 
 <Style id="both_scuba_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_scuba.png</href>
 		</Icon>
@@ -261,7 +233,7 @@
 
 <Style id="carb_artificial_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_artificial.png</href>
 		</Icon>
@@ -274,7 +246,7 @@
 
 <Style id="carb_artificial_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_artificial.png</href>
 		</Icon>
@@ -298,7 +270,7 @@
 
 <Style id="carb_natural_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_natural.png</href>
 		</Icon>
@@ -311,7 +283,7 @@
 
 <Style id="carb_natural_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_natural.png</href>
 		</Icon>
@@ -335,7 +307,7 @@
 
 <Style id="carb_other_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_other.png</href>
 		</Icon>
@@ -348,7 +320,7 @@
 
 <Style id="carb_other_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_other.png</href>
 		</Icon>
@@ -372,7 +344,7 @@
 
 <Style id="carb_plankton_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_plankton.png</href>
 		</Icon>
@@ -385,7 +357,7 @@
 
 <Style id="carb_plankton_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_plankton.png</href>
 		</Icon>
@@ -409,7 +381,7 @@
 
 <Style id="carb_rov_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_rov.png</href>
 		</Icon>
@@ -422,7 +394,7 @@
 
 <Style id="carb_rov_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_rov.png</href>
 		</Icon>
@@ -446,7 +418,7 @@
 
 <Style id="carb_scuba_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_scuba.png</href>
 		</Icon>
@@ -459,7 +431,7 @@
 
 <Style id="carb_scuba_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/carb_scuba.png</href>
 		</Icon>
@@ -483,7 +455,7 @@
 
 <Style id="dbug_artificial_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_artificial.png</href>
 		</Icon>
@@ -496,7 +468,7 @@
 
 <Style id="dbug_artificial_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_artificial.png</href>
 		</Icon>
@@ -520,7 +492,7 @@
 
 <Style id="dbug_natural_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_natural.png</href>
 		</Icon>
@@ -533,7 +505,7 @@
 
 <Style id="dbug_natural_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_natural.png</href>
 		</Icon>
@@ -557,7 +529,7 @@
 
 <Style id="dbug_other_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_other.png</href>
 		</Icon>
@@ -570,7 +542,7 @@
 
 <Style id="dbug_other_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_other.png</href>
 		</Icon>
@@ -594,7 +566,7 @@
 
 <Style id="dbug_plankton_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_plankton.png</href>
 		</Icon>
@@ -607,7 +579,7 @@
 
 <Style id="dbug_plankton_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_plankton.png</href>
 		</Icon>
@@ -631,7 +603,7 @@
 
 <Style id="dbug_rov_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_rov.png</href>
 		</Icon>
@@ -644,7 +616,7 @@
 
 <Style id="dbug_rov_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_rov.png</href>
 		</Icon>
@@ -668,7 +640,7 @@
 
 <Style id="dbug_scuba_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_scuba.png</href>
 		</Icon>
@@ -681,7 +653,7 @@
 
 <Style id="dbug_scuba_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_scuba.png</href>
 		</Icon>
@@ -705,7 +677,7 @@
 
 <Style id="dpoly_artificial_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_artificial.png</href>
 		</Icon>
@@ -718,7 +690,7 @@
 
 <Style id="dpoly_artificial_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_artificial.png</href>
 		</Icon>
@@ -742,7 +714,7 @@
 
 <Style id="dpoly_natural_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_natural.png</href>
 		</Icon>
@@ -755,7 +727,7 @@
 
 <Style id="dpoly_natural_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_natural.png</href>
 		</Icon>
@@ -779,7 +751,7 @@
 
 <Style id="dpoly_other_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_other.png</href>
 		</Icon>
@@ -792,7 +764,7 @@
 
 <Style id="dpoly_other_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_other.png</href>
 		</Icon>
@@ -816,7 +788,7 @@
 
 <Style id="dpoly_plankton_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_plankton.png</href>
 		</Icon>
@@ -829,7 +801,7 @@
 
 <Style id="dpoly_plankton_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_plankton.png</href>
 		</Icon>
@@ -853,7 +825,7 @@
 
 <Style id="dpoly_rov_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_rov.png</href>
 		</Icon>
@@ -866,7 +838,7 @@
 
 <Style id="dpoly_rov_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_rov.png</href>
 		</Icon>
@@ -890,7 +862,7 @@
 
 <Style id="dpoly_scuba_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_scuba.png</href>
 		</Icon>
@@ -903,7 +875,7 @@
 
 <Style id="dpoly_scuba_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_scuba.png</href>
 		</Icon>
@@ -927,7 +899,7 @@
 
 <Style id="non_artificial_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_artificial.png</href>
 		</Icon>
@@ -940,7 +912,7 @@
 
 <Style id="non_artificial_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_artificial.png</href>
 		</Icon>
@@ -964,7 +936,7 @@
 
 <Style id="non_natural_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_natural.png</href>
 		</Icon>
@@ -977,7 +949,7 @@
 
 <Style id="non_natural_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_natural.png</href>
 		</Icon>
@@ -1001,7 +973,7 @@
 
 <Style id="non_other_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_other.png</href>
 		</Icon>
@@ -1014,7 +986,7 @@
 
 <Style id="non_other_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_other.png</href>
 		</Icon>
@@ -1038,7 +1010,7 @@
 
 <Style id="non_plankton_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_plankton.png</href>
 		</Icon>
@@ -1051,7 +1023,7 @@
 
 <Style id="non_plankton_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_plankton.png</href>
 		</Icon>
@@ -1075,7 +1047,7 @@
 
 <Style id="non_rov_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_rov.png</href>
 		</Icon>
@@ -1088,7 +1060,7 @@
 
 <Style id="non_rov_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_rov.png</href>
 		</Icon>
@@ -1112,7 +1084,7 @@
 
 <Style id="non_scuba_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_scuba.png</href>
 		</Icon>
@@ -1125,7 +1097,7 @@
 
 <Style id="non_scuba_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/non_scuba.png</href>
 		</Icon>
@@ -1149,7 +1121,7 @@
 
 <Style id="pending_artificial_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_artificial.png</href>
 		</Icon>
@@ -1162,7 +1134,7 @@
 
 <Style id="pending_artificial_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_artificial.png</href>
 		</Icon>
@@ -1186,7 +1158,7 @@
 
 <Style id="pending_natural_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_natural.png</href>
 		</Icon>
@@ -1199,7 +1171,7 @@
 
 <Style id="pending_natural_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_natural.png</href>
 		</Icon>
@@ -1223,7 +1195,7 @@
 
 <Style id="pending_other_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_other.png</href>
 		</Icon>
@@ -1236,7 +1208,7 @@
 
 <Style id="pending_other_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_other.png</href>
 		</Icon>
@@ -1260,7 +1232,7 @@
 
 <Style id="pending_plankton_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_plankton.png</href>
 		</Icon>
@@ -1273,7 +1245,7 @@
 
 <Style id="pending_plankton_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_plankton.png</href>
 		</Icon>
@@ -1297,7 +1269,7 @@
 
 <Style id="pending_rov_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_rov.png</href>
 		</Icon>
@@ -1310,7 +1282,7 @@
 
 <Style id="pending_rov_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_rov.png</href>
 		</Icon>
@@ -1334,7 +1306,7 @@
 
 <Style id="pending_scuba_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_scuba.png</href>
 		</Icon>
@@ -1347,7 +1319,7 @@
 
 <Style id="pending_scuba_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_scuba.png</href>
 		</Icon>
@@ -1371,7 +1343,7 @@
 
 <Style id="unknown_artificial_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_artificial.png</href>
 		</Icon>
@@ -1384,7 +1356,7 @@
 
 <Style id="unknown_artificial_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_artificial.png</href>
 		</Icon>
@@ -1408,7 +1380,7 @@
 
 <Style id="unknown_natural_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_natural.png</href>
 		</Icon>
@@ -1421,7 +1393,7 @@
 
 <Style id="unknown_natural_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_natural.png</href>
 		</Icon>
@@ -1445,7 +1417,7 @@
 
 <Style id="unknown_other_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_other.png</href>
 		</Icon>
@@ -1458,7 +1430,7 @@
 
 <Style id="unknown_other_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_other.png</href>
 		</Icon>
@@ -1482,7 +1454,7 @@
 
 <Style id="unknown_plankton_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_plankton.png</href>
 		</Icon>
@@ -1495,7 +1467,7 @@
 
 <Style id="unknown_plankton_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_plankton.png</href>
 		</Icon>
@@ -1519,7 +1491,7 @@
 
 <Style id="unknown_rov_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_rov.png</href>
 		</Icon>
@@ -1532,7 +1504,7 @@
 
 <Style id="unknown_rov_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_rov.png</href>
 		</Icon>
@@ -1556,7 +1528,7 @@
 
 <Style id="unknown_scuba_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_scuba.png</href>
 		</Icon>
@@ -1569,7 +1541,7 @@
 
 <Style id="unknown_scuba_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_scuba.png</href>
 		</Icon>
@@ -1593,7 +1565,7 @@
 
 <Style id="dpoly_unspecified_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_unspecified.png</href>
 		</Icon>
@@ -1606,7 +1578,7 @@
 
 <Style id="dpoly_unspecified_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dpoly_unspecified.png</href>
 		</Icon>
@@ -1630,7 +1602,7 @@
 
 <Style id="dbug_unspecified_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_unspecified.png</href>
 		</Icon>
@@ -1643,7 +1615,7 @@
 
 <Style id="dbug_unspecified_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/dbug_unspecified.png</href>
 		</Icon>
@@ -1667,7 +1639,7 @@
 
 <Style id="both_unspecified_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_unspecified.png</href>
 		</Icon>
@@ -1680,7 +1652,7 @@
 
 <Style id="both_unspecified_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/both_unspecified.png</href>
 		</Icon>
@@ -1704,7 +1676,7 @@
 
 <Style id="pending_unspecified_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_unspecified.png</href>
 		</Icon>
@@ -1717,7 +1689,7 @@
 
 <Style id="pending_unspecified_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_unspecified.png</href>
 		</Icon>
@@ -1741,7 +1713,7 @@
 
 <Style id="pending_unspecified_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_unspecified.png</href>
 		</Icon>
@@ -1754,7 +1726,7 @@
 
 <Style id="pending_unspecified_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/pending_unspecified.png</href>
 		</Icon>
@@ -1778,7 +1750,7 @@
 
 <Style id="unknown_unspecified_norm">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_unspecified.png</href>
 		</Icon>
@@ -1791,7 +1763,7 @@
 
 <Style id="unknown_unspecified_high">
 	<IconStyle>
-		<scale>0.3</scale>
+		<scale>10</scale>
 		<Icon>
 			<href>http://circe.rc.pdx.edu:8000/static/img/kml_icons/unknown_unspecified.png</href>
 		</Icon>
@@ -1803,8 +1775,3 @@
 </Style>
 
 
-</Document>
-
-
-</kml>
-    

@@ -1,7 +1,11 @@
+import datetime
+import json
+from django.contrib.gis.geos import GEOSGeometry
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.contrib.gis.geos import fromstr
 from django.template.loader import render_to_string
 from mussels.forms.substrates import SubstrateForm, WaterbodyForm, TypeForm, AgencyForm
 from mussels.models import Substrate
@@ -55,10 +59,19 @@ def edit_related_tables(request, model, pk=None):
     })
 
 def to_kml(request):
-    rows = Substrate.objects.search(status="Corbicula fluminea")
+    rows = Substrate.objects.search(status="Dreissena r. bugensis")
     string = render_to_string("substrates/_kml.kml", {"rows": rows})
-    if request.GET.get("text"):
-        response = HttpResponse(string)
+    if request.GET:
+        response = HttpResponse(string, content_type="text/xml")
     else:
         response = HttpResponse(string, content_type="application/vnd.google-earth.kml+xml; charset=utf-8")
     return response
+
+def to_json(request):
+    dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime) else None
+    rows = Substrate.objects.search()
+    for row in rows:
+        del row['the_geom']
+        p = GEOSGeometry(row['the_geom_plain'])
+        row['the_geom_plain'] = (p[0], p[1])
+    return HttpResponse(json.dumps(rows, default=dthandler))

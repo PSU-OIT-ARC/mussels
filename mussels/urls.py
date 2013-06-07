@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^$', home.home, name='home'),
     url(r'^(\d+)/?$', substrates.edit, name='substrates-edit'),
     url(r'^kml/?$', substrates.to_kml, name='substrates-to-kml'),
+    url(r'^json/?$', substrates.to_json, name='substrates-to-json'),
 
     url(r'^admin/([a-z]+)?$', substrates.edit_related_tables, name='substrates-edit-related'),
     url(r'^admin/([a-z]+)/(\d+)/?$', substrates.edit_related_tables, name='substrates-edit-related'),

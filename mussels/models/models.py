@@ -81,12 +81,25 @@ class SubstrateType(models.Model):
 
 
 class SubstrateManager(models.GeoManager):
-    def search(self, **kwargs):
+    STYLE_MAP = {
+        'non detect': 'non',
+        'results pending': 'pending',
+        'Dreissena polymorpha': 'dpoly',
+        'Dreissena r. bugensis': 'dbug',
+        'D. polymorpha and D. r. bugensis detected': 'both',
+        'Unknown': 'unknown',
+    }
 
+    def style(self, status, type):
+        return SubstrateManager.STYLE_MAP.get(status, "unknown") + "_" + type.lower()
+    
+    def search(self, **kwargs):
+        keys = ["substrate_id", "the_geom", "the_geom_plain", "status", "substrate_type", "date_checked", "waterbody", "description", "agency"]
         sql = ["""
             SELECT 
                 id as substrate_id, 
                 st_askml(dv.the_geom) as the_geom, 
+                st_AsEWKT(dv.the_geom) as the_geom_plain,
                 dv.status as status,
                 dv.substrate_type as substrate_type, 
                 dv.date_checked as date_checked,
@@ -95,7 +108,7 @@ class SubstrateManager(models.GeoManager):
                 dv.agency as agency 
             FROM 
                 public.display_view as dv
-            WHERE 1=1
+            WHERE dv.the_geom IS NOT NULL
         """]
         args = []
 
@@ -111,10 +124,15 @@ class SubstrateManager(models.GeoManager):
         cursor = connection.cursor()
         cursor.execute(sql, args)
 
-        keys = ["substrate_id", "the_geom", "status", "substrate_type", "date_checked", "waterbody", "description", "agency"]
         rows = []
         for row in cursor.fetchall():
-            rows.append(dict([(k, v) for k, v in zip(keys, row)]))
+            row = dict([(k, v) for k, v in zip(keys, row)])
+            types = row['substrate_type'].split(", ")
+            for type in types:
+                copy = row.copy()
+                copy['substrate_type'] = type
+                copy['style'] = self.style(copy['status'], copy['substrate_type'])
+                rows.append(copy)
 
         return rows
 
