@@ -11,7 +11,8 @@ had to do:
 
     export PATH=/usr/pgsql-9.2/bin:$PATH
 
-# Configure
+## Configure
 
     cp mussels/example_settings.py mussels/local_settings.py
     vim mussels/local_settings.py # adjust settings
+

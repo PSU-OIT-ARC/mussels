@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+        <title>{% block page_title %}Mussels{% endblock %}</title>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.10.1.min.js"></script>
+        {% endblock %}
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+</style>
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>

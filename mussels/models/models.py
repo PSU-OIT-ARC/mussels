@@ -1,11 +1,16 @@
-from django.db import models
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import fromstr
+from django.db import connection
 
 class Status(models.Model):
     status_id = models.AutoField(primary_key=True, db_column="status_id")
-    text = models.CharField(db_column="status_text", max_length=255)
+    name = models.CharField(db_column="status_text", max_length=255)
 
     class Meta:
         db_table = 'statuses'
+
+    def __unicode__(self):
+        return self.name
 
 
 class Type(models.Model):
@@ -15,6 +20,9 @@ class Type(models.Model):
     class Meta:
         db_table = 'types'
 
+    def __unicode__(self):
+        return self.name
+
 
 class Waterbody(models.Model):
     waterbody_id = models.AutoField(primary_key=True, db_column="waterbody_id")
@@ -22,6 +30,9 @@ class Waterbody(models.Model):
 
     class Meta:
         db_table = 'waterbodies'
+
+    def __unicode__(self):
+        return self.name
 
 
 class User(models.Model):
@@ -56,6 +67,57 @@ class Agency(models.Model):
     class Meta:
         db_table = 'reporting_agencies'
 
+    def __unicode__(self):
+        return self.name
+
+
+class SubstrateType(models.Model):
+    substrate_type_id = models.AutoField(db_column="substrate_type_id", primary_key=True)
+    substrate = models.ForeignKey('Substrate', db_column="substrate_id")
+    type = models.ForeignKey(Type, db_column="type_id")
+    
+    class Meta:
+        db_table = 'substrate_types'
+
+
+class SubstrateManager(models.GeoManager):
+    def search(self, **kwargs):
+
+        sql = ["""
+            SELECT 
+                id as substrate_id, 
+                st_askml(dv.the_geom) as the_geom, 
+                dv.status as status,
+                dv.substrate_type as substrate_type, 
+                dv.date_checked as date_checked,
+                dv.waterbody_name as waterbody, 
+                dv.physical_description as description,
+                dv.agency as agency 
+            FROM 
+                public.display_view as dv
+            WHERE 1=1
+        """]
+        args = []
+
+        if "type" in kwargs:
+            args.append("%" + kwargs['type'] + "%")
+            sql.append("AND dv.substrate_type LIKE %s")
+
+        if "status" in kwargs:
+            args.append(kwargs['status'])
+            sql.append("AND lower(dv.status) = lower(%s)")
+
+        sql = " ".join(sql)
+        cursor = connection.cursor()
+        cursor.execute(sql, args)
+
+        keys = ["substrate_id", "the_geom", "status", "substrate_type", "date_checked", "waterbody", "description", "agency"]
+        rows = []
+        for row in cursor.fetchall():
+            rows.append(dict([(k, v) for k, v in zip(keys, row)]))
+
+        return rows
+
 
 class Substrate(models.Model):
     substrate_id = models.AutoField(primary_key=True, db_column="substrate_id")
@@ -64,18 +126,19 @@ class Substrate(models.Model):
     date_checked = models.DateField(db_column="date_checked")
     physical_description = models.TextField()
     agency = models.ForeignKey(Agency, db_column="agency_id")
-    clr_substrate_id = models.IntegerField(db_column="clr_substrate_id")
+    is_approved = models.BooleanField(db_column="approved", default=False)
+    clr_substrate_id = models.IntegerField(db_column="clr_substrate_id", default=0, blank=True)
     user = models.IntegerField(db_column="user_id")
+    types = models.ManyToManyField(Type, through=SubstrateType)
+
+    geom = models.PointField(db_column="the_geom", srid=4326)
+
+    objects = SubstrateManager()
 
     class Meta:
         db_table = 'substrates'
 
-
-class SubstrateType(models.Model):
-    substrate_id = models.ForeignKey(Substrate, db_column="substrate_id")
-    type_id = models.ForeignKey(Type, db_column="type_id")
-    
-    class Meta:
-        db_table = 'substrate_types'
-
+    def to_point(self):
+        point = fromstr(self.geom)
+        return point
 

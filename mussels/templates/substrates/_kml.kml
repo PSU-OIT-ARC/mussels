@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.0">
+<Document>
+{% for row in rows %}
+    <Placemark>
+        <name>Monitoring station at {{ row.waterbody }}</name>
+        <description><![CDATA[<b>Status:</b> {{ row.status }} 
+        <br />
+        <b>Substrate:</b> {{ row.substrate_type }}
+        <br />
+        {% if row.date_checked %}
+            <b>Date Checked:</b> {{ row.date_checked }}
+            <br />
+        {% endif %}
+        {% if row.description %}
+            <b>Description:</b> {{ row.description }}
+            <br />
+        {% endif %}
+        <b>Provider:</b> {{ row.agency }}
+        <br />
+        ]]></description>
+        {{ row.the_geom|safe }}
+    </Placemark>
+{% endfor %}
+</Document>
+</kml>
+    
