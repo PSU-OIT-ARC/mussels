@@ -12,6 +12,18 @@ h4 {
     margin-top:0px;
 }
 
+label {
+    display:block;
+}
+
+select[multiple] {
+    height:150px;
+}
+
+.errorlist {
+    color:#ff0000;
+}
+
 #map-canvas { 
     height: 100% 
 }

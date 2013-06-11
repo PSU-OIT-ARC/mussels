@@ -13,7 +13,7 @@ def powerset(iterable):
 
 status = ["artificial", "natural", "other", "plankton", "rov", "scuba", "unspecified"]
 status.sort()
-mussels = ["both", "carb", "dbug", "dpoly", "non", "unknown"]
+mussels = ["both", "carb", "dbug", "dpoly", "non", "unknown", "pending"]
 for mussel in mussels:
     for s in powerset(status):
         if s == ():

@@ -8,7 +8,20 @@ from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import fromstr
 from django.template.loader import render_to_string
 from mussels.forms.substrates import SubstrateForm, WaterbodyForm, TypeForm, AgencyForm
-from mussels.models import Substrate
+from mussels.models import Substrate, Agency, Waterbody, Status, Type
+
+def admin(request):
+    return render(request, "substrates/admin.html", {
+
+    })
+
+def view(request):
+    substrates = Substrate.objects.all().select_related("waterbody", "agency", "status", "user").prefetch_related("types")[:100]
+    rendered = render(request, "substrates/view.html", {
+        'substrates': substrates,
+    })
+
+    return rendered
 
 def edit(request, substrate_id=None):
     """
@@ -23,7 +36,7 @@ def edit(request, substrate_id=None):
         if form.is_valid():
             form.save()
             messages.success(request, "Observation saved")
-            return HttpResponseRedirect(reverse("home"))
+            return HttpResponseRedirect(reverse("substrates-view"))
     else:
         form = SubstrateForm(instance=instance)
 
@@ -31,12 +44,27 @@ def edit(request, substrate_id=None):
         'form': form,
     })
 
+model_to_form_class = {
+    'waterbody': WaterbodyForm,
+    'type': TypeForm,
+    'agency': AgencyForm,
+}
+
+model_to_model_class = {
+    'waterbody': Waterbody,
+    'type': Type,
+    'agency': Agency,
+}
+
+def view_related_tables(request, model):
+    model_class = model_to_model_class[model]
+    objects = model_class.objects.all()
+    return render(request, 'substrates/view_related.html', {
+        'objects': objects,
+        'model': model,
+    })
+
 def edit_related_tables(request, model, pk=None):
-    model_to_form_class = {
-        'waterbody': WaterbodyForm,
-        'type': TypeForm,
-        'agency': AgencyForm,
-    }
     form_class = model_to_form_class[model]
 
     instance = None
@@ -49,7 +77,7 @@ def edit_related_tables(request, model, pk=None):
         if form.is_valid():
             form.save()
             messages.success(request, "Saved!")
-            return HttpResponseRedirect(reverse("home"))
+            return HttpResponseRedirect(reverse("substrates-view-related", args=(model,)))
     else:
         form = form_class(instance=instance)
 
@@ -69,7 +97,11 @@ def to_kml(request):
 
 def to_json(request):
     dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.date) else None
-    rows = Substrate.objects.search()
+    kwargs = {}
+    if "statuses[]" in request.GET:
+        statuses = request.GET.getlist("statuses[]")
+        kwargs["statuses"] = statuses
+    rows = Substrate.objects.search(**kwargs)
     for row in rows:
         del row['the_geom']
         p = GEOSGeometry(row['the_geom_plain'])

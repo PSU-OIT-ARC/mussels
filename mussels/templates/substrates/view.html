@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block body %}
+<table border="1">
+    <thead>
+        <tr>
+            <th>CLR ID</th>
+            <th>Lat</th>
+            <th>Lon</th>
+            <th>Waterbody</th>
+            <th>Types</th>
+            <th>Status</th>
+            <th>Reporter</th>
+            <th>Agency</th>
+            <th>User ID</th>
+            <th>Approved</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for substrate in substrates %}
+            <tr>
+                <td>{{ substrate.clr_substrate_id }}</td>
+                <td>{{ substrate.to_point.1 }}</td>
+                <td>{{ substrate.to_point.0 }}</td>
+                <td>{{ substrate.waterbody }}</td>
+                <td>{{ substrate.types.all|join:", " }}</td>
+                <td>{{ substrate.status }}</td>
+                <td>{{ substrate.user }} </td>
+                <td>{{ substrate.agency }}</td>
+                <td>{{ substrate.user.user_id }}</td>
+                <td>{{ substrate.is_approved }}</td>
+                <td><a href="{% url 'substrates-edit' substrate.pk %}">{{ substrate.pk }}</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

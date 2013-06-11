@@ -11,12 +11,18 @@ urlpatterns = patterns('',
     # url(r'^$', 'mussels.views.home', name='home'),
     # url(r'^mussels/', include('mussels.foo.urls')),
     url(r'^$', home.home, name='home'),
-    url(r'^(\d+)/?$', substrates.edit, name='substrates-edit'),
     url(r'^kml/?$', substrates.to_kml, name='substrates-to-kml'),
     url(r'^json/?$', substrates.to_json, name='substrates-to-json'),
 
-    url(r'^admin/([a-z]+)?$', substrates.edit_related_tables, name='substrates-edit-related'),
-    url(r'^admin/([a-z]+)/(\d+)/?$', substrates.edit_related_tables, name='substrates-edit-related'),
+    url(r'^admin/?$', substrates.admin, name='substrates-admin'),
+
+    url(r'^admin/substrates/view/?$', substrates.view, name='substrates-view'),
+    url(r'^admin/substrates/edit/(\d+)/?$', substrates.edit, name='substrates-edit'),
+    url(r'^admin/substrates/add/?$', substrates.edit, name='substrates-edit'),
+
+    url(r'^admin/related/([a-z]+)/?$', substrates.view_related_tables, name='substrates-view-related'),
+    url(r'^admin/related/([a-z]+)/add/?$', substrates.edit_related_tables, name='substrates-edit-related'),
+    url(r'^admin/related/([a-z]+)/(\d+)/?$', substrates.edit_related_tables, name='substrates-edit-related'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

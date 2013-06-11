@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block body %}
+<ul>
+    <a href="{% url 'substrates-view' %}">Substrates</a>
+    <a href="{% url 'substrates-view-related' 'agency' %}">Agencies</a>
+    <a href="{% url 'substrates-view-related' 'types' %}">Types</a>
+    <a href="{% url 'substrates-view-related' 'waterbody' %}">Waterbodies</a>
+</ul>
+{% endblock %}

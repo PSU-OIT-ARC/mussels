@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block body %}
+<table>
+    {% for object in objects %}
+        <tr>
+            <td><a href="{% url 'substrates-edit-related' model object.pk %}">{{ object.name }}</a></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

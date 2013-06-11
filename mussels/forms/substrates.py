@@ -6,26 +6,33 @@ from django.contrib.gis.geos import Point
 class SubstrateForm(forms.ModelForm):
     lat = forms.FloatField()
     lon = forms.FloatField()
+    delete = forms.BooleanField(initial=False, required=False)
+
     def __init__(self, *args, **kwargs):
         super(SubstrateForm, self).__init__(*args, **kwargs)
         if self.instance.pk is not None:
             point = fromstr(self.instance.geom)
             self.fields['lon'].initial = point[0]
             self.fields['lat'].initial = point[1]
+        else:
+            self.fields.pop("delete")
 
     def save(self, commit=False):
-        # convert the lat and lon to a point
-        point = Point(self.cleaned_data['lon'], self.cleaned_data['lat'])
-        self.instance.geom = point
+        if self.cleaned_data.get("delete", False):
+            self.instance.delete()
+        else:
+            # convert the lat and lon to a point
+            point = Point(self.cleaned_data['lon'], self.cleaned_data['lat'])
+            self.instance.geom = point
 
-        super(SubstrateForm, self).save(commit=False)
-        self.instance.save()
+            super(SubstrateForm, self).save(commit=False)
+            self.instance.save()
 
-        # update the many to many table for substrate types
-        self.instance.types.clear()
-        for type in self.cleaned_data['types']:
-            st = SubstrateType(type_id=type.type_id, substrate_id=self.instance.pk)
-            st.save()
+            # update the many to many table for substrate types
+            self.instance.types.clear()
+            for type in self.cleaned_data['types']:
+                st = SubstrateType(type_id=type.type_id, substrate_id=self.instance.pk)
+                st.save()
 
     class Meta:
         model = Substrate
@@ -60,6 +67,13 @@ class SubstrateRelatedForm(forms.ModelForm):
                 'waterbody',
                 'user',
             )
+
+    def clean_delete(self):
+        delete = self.cleaned_data['delete']
+        if delete:
+            if len(self.related_substrates) != 0:
+                raise forms.ValidationError("You cannot delete this when data is associated with it. You must delete the associated data first")
+        return delete
 
     def save(self, *args, **kwargs):
         if self.cleaned_data.get("delete", False):
