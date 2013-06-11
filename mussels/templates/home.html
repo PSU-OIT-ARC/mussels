@@ -2,11 +2,37 @@
 {% block head %}
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/map.js"></script>
-    <script src="http://maps.google.com/maps/api/js?v=3&key=AIzaSyBjGd2GxWliijQM57ccfR5lbF_1UewlBLg&sensor=false"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/markerclusterer.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&key=AIzaSyBjGd2GxWliijQM57ccfR5lbF_1UewlBLg&sensor=false"></script>
 {% endblock %}
 {% block body %}
 
 <div id="map" style="width:100%; height:100%" ></div>
 
+<div id="legend" class="panel">
+    <h3>Legend</h3>
+    <h4>Detection Statuses</h4>
+    <ul>
+        {% for status in statuses %}
+            <li><img src="{{ STATIC_URL }}/img/legend/status_{{ status.machine_name }}.png"    alt="{{ status.name }}" />{{ status.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <h4>Substrate Types</h4>
+    <ul>
+        {% for type in types %}
+            <li><img src="{{ STATIC_URL }}/img/legend/type_{{ type.machine_name }}.png"    alt="{{ type.name }}" />{{ type.name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div id="layers" class="panel">
+    <h4>Stations by Status Type</h4>
+    <ul>
+        {% for status in statuses %}
+            <li><label><input type="checkbox" value="" />{{ status.name }}</label></li>
+        {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}

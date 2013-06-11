@@ -68,7 +68,7 @@ def to_kml(request):
     return response
 
 def to_json(request):
-    dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime) else None
+    dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.date) else None
     rows = Substrate.objects.search()
     for row in rows:
         del row['the_geom']

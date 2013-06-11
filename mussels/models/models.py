@@ -5,9 +5,12 @@ from django.db import connection
 class Status(models.Model):
     status_id = models.AutoField(primary_key=True, db_column="status_id")
     name = models.CharField(db_column="status_text", max_length=255)
+    order_id = models.IntegerField(db_column="order_id")
+    machine_name = models.CharField(db_column="machine_name", max_length=30)
 
     class Meta:
         db_table = 'statuses'
+        ordering = ['order_id']
 
     def __unicode__(self):
         return self.name
@@ -16,9 +19,12 @@ class Status(models.Model):
 class Type(models.Model):
     type_id = models.AutoField(primary_key=True, db_column="type_id")
     name = models.CharField(db_column="type_name", max_length=255)
+    order_id = models.IntegerField(db_column="order_id")
+    machine_name = models.CharField(db_column="machine_name", max_length=30)
 
     class Meta:
         db_table = 'types'
+        ordering = ['order_id']
 
     def __unicode__(self):
         return self.name
@@ -81,17 +87,16 @@ class SubstrateType(models.Model):
 
 
 class SubstrateManager(models.GeoManager):
-    STYLE_MAP = {
-        'non detect': 'non',
-        'results pending': 'pending',
-        'Dreissena polymorpha': 'dpoly',
-        'Dreissena r. bugensis': 'dbug',
-        'D. polymorpha and D. r. bugensis detected': 'both',
-        'Unknown': 'unknown',
-    }
+    STATUS_MAP = {}
+    def __init__(self, *args, **kwargs):
+        super(SubstrateManager, self).__init__(*args, **kwargs)
+        if SubstrateManager.STATUS_MAP == {}:
+            statues = Status.objects.all()
+            for status in statues:
+                SubstrateManager.STATUS_MAP[status.name] = status.machine_name
 
     def style(self, status, type):
-        return SubstrateManager.STYLE_MAP.get(status, "unknown") + "_" + type.lower()
+        return SubstrateManager.STATUS_MAP.get(status, "unknown") + "_" + type.lower()
     
     def search(self, **kwargs):
         keys = ["substrate_id", "the_geom", "the_geom_plain", "status", "substrate_type", "date_checked", "waterbody", "description", "agency"]
@@ -109,6 +114,7 @@ class SubstrateManager(models.GeoManager):
             FROM 
                 public.display_view as dv
             WHERE dv.the_geom IS NOT NULL
+            AND dv.status != 'results pending'
         """]
         args = []
 
@@ -120,6 +126,10 @@ class SubstrateManager(models.GeoManager):
             args.append(kwargs['status'])
             sql.append("AND lower(dv.status) = lower(%s)")
 
+        if "id" in kwargs:
+            args.append(kwargs['id'])
+            sql.append("AND id = %s")
+
         sql = " ".join(sql)
         cursor = connection.cursor()
         cursor.execute(sql, args)
@@ -127,12 +137,10 @@ class SubstrateManager(models.GeoManager):
         rows = []
         for row in cursor.fetchall():
             row = dict([(k, v) for k, v in zip(keys, row)])
-            types = row['substrate_type'].split(", ")
-            for type in types:
-                copy = row.copy()
-                copy['substrate_type'] = type
-                copy['style'] = self.style(copy['status'], copy['substrate_type'])
-                rows.append(copy)
+            row['status_key'] = SubstrateManager.STATUS_MAP.get(row['status'], "unknown")
+            row['type_keys'] = sorted(row['substrate_type'].lower().split(", "))
+            row['image'] = row['status_key'] + "_" + "_".join(row['type_keys'])
+            rows.append(row)
 
         return rows
 
