@@ -3,7 +3,7 @@
 <table>
     {% for object in objects %}
         <tr>
-            <td><a href="{% url 'substrates-edit-related' model object.pk %}">{{ object.name }}</a></td>
+            <td><a href="{% url 'observations-edit-related' model object.pk %}">{{ object.name }}</a></td>
         </tr>
     {% endfor %}
 </table>

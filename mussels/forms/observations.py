@@ -1,15 +1,15 @@
 from django import forms
-from mussels.models import Substrate, Status, Type, Waterbody, User, Agency, SubstrateType
+from mussels.models import Observation, Specie, Substrate, Waterbody, User, Agency, ObservationSubstrate
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.geos import Point
 
-class SubstrateForm(forms.ModelForm):
+class ObservationForm(forms.ModelForm):
     lat = forms.FloatField()
     lon = forms.FloatField()
     delete = forms.BooleanField(initial=False, required=False)
 
     def __init__(self, *args, **kwargs):
-        super(SubstrateForm, self).__init__(*args, **kwargs)
+        super(ObservationForm, self).__init__(*args, **kwargs)
         if self.instance.pk is not None:
             point = fromstr(self.instance.geom)
             self.fields['lon'].initial = point[0]
@@ -25,33 +25,33 @@ class SubstrateForm(forms.ModelForm):
             point = Point(self.cleaned_data['lon'], self.cleaned_data['lat'])
             self.instance.geom = point
 
-            super(SubstrateForm, self).save(commit=False)
+            super(ObservationForm, self).save(commit=False)
             self.instance.save()
 
             # update the many to many table for substrate types
-            self.instance.types.clear()
-            for type in self.cleaned_data['types']:
-                st = SubstrateType(type_id=type.type_id, substrate_id=self.instance.pk)
+            self.instance.substrates.clear()
+            for substrate in self.cleaned_data['substrates']:
+                st = ObservationSubstrate(substrate_id=substrate.substrate_id, observation_id=self.instance.pk)
                 st.save()
 
     class Meta:
-        model = Substrate
+        model = Observation
         fields = (
             'waterbody',
-            'status',
+            'specie',
             'date_checked',
             'physical_description',
             'agency',
             'clr_substrate_id',
-            'types',
+            'substrates',
         )
 
-class SubstrateRelatedForm(forms.ModelForm):
+class ObservationRelatedForm(forms.ModelForm):
     delete = forms.BooleanField(initial=False, required=False)
 
     def __init__(self, *args, **kwargs):
-        super(SubstrateRelatedForm, self).__init__(*args, **kwargs)
-        self.related_substrates = []
+        super(ObservationRelatedForm, self).__init__(*args, **kwargs)
+        self.related_observations = []
 
         if self.instance.pk is None:
             self.fields.pop('delete')
@@ -60,10 +60,10 @@ class SubstrateRelatedForm(forms.ModelForm):
             # stuff going down here
             model_name = self.instance._meta.object_name.lower()
             filter = {model_name + "_id": self.instance.pk}
-            self.related_substrates = Substrate.objects.filter(**filter).select_related(
+            self.related_observations = Observation.objects.filter(**filter).select_related(
                 'agency',
-                'status',
-                'types',
+                'specie',
+                'substrates',
                 'waterbody',
                 'user',
             )
@@ -71,7 +71,7 @@ class SubstrateRelatedForm(forms.ModelForm):
     def clean_delete(self):
         delete = self.cleaned_data['delete']
         if delete:
-            if len(self.related_substrates) != 0:
+            if len(self.related_observations) != 0:
                 raise forms.ValidationError("You cannot delete this when data is associated with it. You must delete the associated data first")
         return delete
 
@@ -79,22 +79,22 @@ class SubstrateRelatedForm(forms.ModelForm):
         if self.cleaned_data.get("delete", False):
             self.instance.delete()
         else:
-            super(SubstrateRelatedForm, self).save(*args, **kwargs)
+            super(ObservationRelatedForm, self).save(*args, **kwargs)
 
 
-class WaterbodyForm(SubstrateRelatedForm):
+class WaterbodyForm(ObservationRelatedForm):
     class Meta:
         model = Waterbody
         fields = ('name',)
 
 
-class TypeForm(SubstrateRelatedForm):
+class SubstrateForm(ObservationRelatedForm):
     class Meta:
-        model = Type
+        model = Substrate
         fields = ('name',)
 
 
-class AgencyForm(SubstrateRelatedForm):
+class AgencyForm(ObservationRelatedForm):
     class Meta:
         model = Agency
         fields = ('name',)

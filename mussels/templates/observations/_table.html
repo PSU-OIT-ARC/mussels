@@ -5,8 +5,8 @@
             <th>Lat</th>
             <th>Lon</th>
             <th>Waterbody</th>
-            <th>Types</th>
-            <th>Status</th>
+            <th>Substrates</th>
+            <th>Specie</th>
             <th>Reporter</th>
             <th>Agency</th>
             <th>User ID</th>
@@ -15,19 +15,19 @@
         </tr>
     </thead>
     <tbody>
-        {% for substrate in form.related_substrates %}
+        {% for observation in form.related_observations %}
             <tr>
                 <td>{{ substrate.clr_substrate_id }}</td>
                 <td>{{ substrate.to_point.1 }}</td>
                 <td>{{ substrate.to_point.0 }}</td>
                 <td>{{ substrate.waterbody }}</td>
-                <td>{{ substrate.types.all|join:", " }}</td>
-                <td>{{ substrate.status }}</td>
+                <td>{{ substrate.substrates.all|join:", " }}</td>
+                <td>{{ substrate.specie }}</td>
                 <td>{{ substrate.user.first_name }} {{ substrate.user.last_name }}</td>
                 <td>{{ substrate.agency }}</td>
                 <td>{{ substrate.user.user_id }}</td>
                 <td>{{ substrate.is_approved }}</td>
-                <td><a href="{% url 'substrates-edit' substrate.pk %}">Edit</a></td>
+                <td><a href="{% url 'observations-edit' observation.pk %}">Edit</a></td>
             </tr>
         {% endfor %}
     </tbody>

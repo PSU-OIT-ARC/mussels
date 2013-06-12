@@ -2,6 +2,9 @@ var map = null;
 var markers = [];
 var infoWindow = null;
 var clusters = {}
+var xhr = null;
+var loading_bar_time_id = null;
+
 $(document).ready(function(){
     // turn off labels
     var styles = [
@@ -24,7 +27,7 @@ $(document).ready(function(){
     map = new google.maps.Map(document.getElementById("map"), mapOptions);
     map.setOptions({styles: styles})
     map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById("legend"))
-    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById("layers"))
+    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById("search-button"))
 
     // center the map around the US
     // http://stackoverflow.com/questions/2936960/google-maps-api-load-the-us
@@ -38,25 +41,73 @@ $(document).ready(function(){
         content: '',
     });
 
-    markers = [];
-    fetchMarkers(renderMarkers, {});
+    // add the events for the search and apply buttons
     $('#apply-button').click(applyClick)
+    $('#search-button').click(showSearch);
+
+    // fetch all the markers, then render them
+    fetchMarkers(renderMarkers, {});
 });
 
-function applyClick(){
-    clear()
-    var statuses = []
-    $('.status-checkbox:checked').each(function(){
-        statuses.push($(this).val());
+function showSearch(){
+    // show the search forms, and register events that trigger it to be closed
+    $('#overlay, #search').show()
+    $('#overlay').click(hideSearch);
+    $(window).keyup(function(e){
+        if(e.keyCode == 27){ // esc key
+            hideSearch();
+        }
     });
-    if(statuses.length == 0){
+}
+
+function hideSearch(){
+    // hide the search form, and unbind all the events that showSearch setup
+    $('#overlay, #search').hide()
+    $('#overlay').unbind('click');
+    $(window).unbind('keyup');
+}
+
+function startLoading(){
+    // start rendering the loading bar
+    var states = " . .. ... .... .....".split(" ");
+
+    loading_bar_time_id = setInterval(function loading(){
+        var old_state = states.shift();
+        states.push(old_state);
+        $('#progress').html(old_state);
+        return loading;
+    }(), 250);
+
+    $('#overlay, #loading').show();
+}
+
+function stopLoading(){
+    // stop rendering the loading bar
+    $('#overlay, #loading').hide();
+    clearInterval(loading_bar_time_id);
+}
+
+function applyClick(){
+    // when search criteria is entered, clear everything on the map
+    clear()
+    hideSearch();
+
+    // generate the search parameters based on the input from the form
+    var species = []
+    $('.status-checkbox:checked').each(function(){
+        species.push($(this).val());
+    });
+    if(species.length == 0){
         // jQuery won't create a querystring with an empty array, so we add something to it
-        statuses.push("lame") 
+        species.push("lame") 
     }
-    fetchMarkers(renderMarkers, {"statuses": statuses})
+
+    // fetch all the markers and render them
+    fetchMarkers(renderMarkers, {"species": species})
 }
 
 function clear(){
+    // clear all the markers and clusters on the map
     for(var i = 0; i < markers.length; i++){
         markers[i].setMap(null);
     }
@@ -70,7 +121,10 @@ function clear(){
 }
 
 function fetchMarkers(onDone, kwargs){
-    $.getJSON("/json", kwargs, function(data){
+    // fetch the markers from the server
+    if(xhr) xhr.abort();
+    startLoading();
+    xhr = $.getJSON("/json", kwargs, function(data){
         for(var i = 0; i < data.length; i++){
             var row = data[i];
             // build the marker
@@ -83,24 +137,28 @@ function fetchMarkers(onDone, kwargs){
 }
 
 function renderMarkers(){
-    var markers_grouped_by_status = {}
+    // this groups the markers by the specie associated with the marker
+    var markers_grouped_by_specie = {}
     for(var i = 0; i < markers.length; i++){
         var marker = markers[i];
         // init the array inside the cluster
-        if(!(marker.info.status_key in markers_grouped_by_status)){
-            markers_grouped_by_status[marker.info.status_key] = []
+        if(!(marker.info.specie_key in markers_grouped_by_specie)){
+            markers_grouped_by_specie[marker.info.specie_key] = []
         }
 
         // add this marker to the right cluster
-        markers_grouped_by_status[marker.info.status_key].push(marker);
+        markers_grouped_by_specie[marker.info.specie_key].push(marker);
     }
 
     // now draw all the clusters on the map
-    clusterByStatus(markers_grouped_by_status, Object.keys(markers_grouped_by_status))
+    drawClustersBySpecie(markers_grouped_by_specie, Object.keys(markers_grouped_by_specie))
+
+    // hide the loading bar since everything is loaded now
+    stopLoading();
 }
 
 // draws a set of clusters on the map
-function clusterByStatus(groups, keys){
+function drawClustersBySpecie(groups, keys){
     for(var i = 0; i < keys.length; i++){
         var k = keys[i];
         var cluster_img = "/static/img/kml_cluster/status_" + k
@@ -148,7 +206,7 @@ function markerFactory(row){
     var point = new google.maps.LatLng(row.the_geom_plain[1], row.the_geom_plain[0]);
     var marker = new google.maps.Marker({
         position: point,
-        map: map,
+        map: null,
         title: row.description,
         icon: icon,
     })
@@ -165,8 +223,8 @@ function markerFactory(row){
 
 function generateBalloonText(row){
     var s = ["<h4>Monitoring station at " + row.waterbody + "</h4>"];
-    s.push("<strong>Status:</strong> " + row.status)
-    s.push("<strong>Substrate:</strong> " + row.substrate_type)
+    s.push("<strong>Specie:</strong> " + row.specie)
+    s.push("<strong>Substrate:</strong> " + row.substrates)
     if(row.date_checked){
         s.push("<strong>Date Checked:</strong> " + row.date_checked);
     }

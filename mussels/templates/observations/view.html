@@ -3,12 +3,12 @@
 <table border="1">
     <thead>
         <tr>
-            <th>CLR ID</th>
+            <th>CLR Substrate ID</th>
             <th>Lat</th>
             <th>Lon</th>
             <th>Waterbody</th>
-            <th>Types</th>
-            <th>Status</th>
+            <th>Substrates</th>
+            <th>Specie</th>
             <th>Reporter</th>
             <th>Agency</th>
             <th>User ID</th>
@@ -23,13 +23,13 @@
                 <td>{{ substrate.to_point.1 }}</td>
                 <td>{{ substrate.to_point.0 }}</td>
                 <td>{{ substrate.waterbody }}</td>
-                <td>{{ substrate.types.all|join:", " }}</td>
-                <td>{{ substrate.status }}</td>
-                <td>{{ substrate.user }} </td>
+                <td>{{ substrate.substrates.all|join:", " }}</td>
+                <td>{{ substrate.specie }}</td>
+                <td>{{ substrate.user.first_name }} {{ substrate.user.last_name }}</td>
                 <td>{{ substrate.agency }}</td>
                 <td>{{ substrate.user.user_id }}</td>
                 <td>{{ substrate.is_approved }}</td>
-                <td><a href="{% url 'substrates-edit' substrate.pk %}">{{ substrate.pk }}</a></td>
+                <td><a href="{% url 'observations-edit' observation.pk %}">Edit</a></td>
             </tr>
         {% endfor %}
     </tbody>

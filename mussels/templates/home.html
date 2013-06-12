@@ -7,33 +7,59 @@
 {% endblock %}
 {% block body %}
 
-<div id="map" style="width:100%; height:100%" ></div>
+<div id="map"></div>
 
 <div id="legend" class="panel">
     <h3>Legend</h3>
-    <h4>Detection Statuses</h4>
+    <h4>Specie</h4>
     <ul>
-        {% for status in statuses %}
-            <li><img src="{{ STATIC_URL }}/img/kml_cluster/status_{{ status.machine_name }}_1.png"    alt="{{ status.name }}" />{{ status.name }}</li>
+        {% for specie in species %}
+            <li><img src="{{ STATIC_URL }}/img/kml_cluster/status_{{ specie.machine_name }}_1.png"    alt="{{ specie.name }}" />{{ specie.name }}</li>
         {% endfor %}
     </ul>
 
     <h4>Substrate Types</h4>
     <ul>
-        {% for type in types %}
-            <li><img src="{{ STATIC_URL }}/img/legend/type_{{ type.machine_name }}.png"    alt="{{ type.name }}" />{{ type.name }}</li>
+        {% for substrate in substrates %}
+            <li><img src="{{ STATIC_URL }}/img/legend/type_{{ substrate.machine_name }}.png"    alt="{{ substrate.name }}" />{{ substrate.name }}</li>
         {% endfor %}
     </ul>
 </div>
 
-<div id="layers" class="panel">
-    <h4>Stations by Status Type</h4>
+<div id="search-button" class="panel"><a href="#">Search</a></div>
+
+
+<div id="search" class="panel">
+    <h4>Stations by species</h4>
     <ul>
-        {% for status in statuses %}
-            <li><label><input class="status-checkbox" type="checkbox" value="{{ status.name }}" checked="checked" />{{ status.name }}</label></li>
+        {% for specie in species %}
+            <li><label><input class="status-checkbox" type="checkbox" value="{{ specie.name }}" checked="checked" />{{ specie.name }}</label></li>
         {% endfor %}
     </ul>
+
+    <h4>Waterbodies</h4>
+    <select name="waterbody" id="waterbody">
+    {% for waterbody in waterbodies %}
+        <option value="{{ waterbody.name }}">{{ waterbody.name }}</option>
+    {% endfor %}
+    </select>
+
+    <h4>Agencies</h4>
+    <select name="agency" id="agency">
+    {% for agency in agencies %}
+        <option value="{{ agency.name }}">{{ agency.name }}</option>
+    {% endfor %}
+    </select>
+
+
+
     <input type="button" name="button" value="Apply" id="apply-button" />
+</div>
+
+<div id="overlay"></div>
+
+<div id="loading">
+    <h2><span id="progress"></span></h2>
 </div>
 
 {% endblock %}

@@ -1,11 +1,15 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from mussels.models import Status, Type
+from mussels.models import Specie, Substrate, Waterbody, Agency, Observation
 
 def home(request):
-    statuses = Status.objects.all()
-    types = Type.objects.all()
+    species = Specie.objects.all()
+    substrates = Substrate.objects.all()
+    waterbodies = Waterbody.objects.all()
+    agencies = Agency.objects.all()
     return render(request, "home.html", {
-        'statuses': statuses,
-        'types': types,
+        'species': species,
+        'substrates': substrates,
+        'waterbodies': waterbodies,
+        'agencies': agencies,
     })

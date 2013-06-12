@@ -4,9 +4,9 @@
 {% for row in rows %}
     <Placemark>
         <name>Monitoring station at {{ row.waterbody }}</name>
-        <description><![CDATA[<b>Status:</b> {{ row.status }} 
+        <description><![CDATA[<b>Specie:</b> {{ row.specie }} 
         <br />
-        <b>Substrate:</b> {{ row.substrate_type }}
+        <b>Substrate:</b> {{ row.substrates }}
         <br />
         {% if row.date_checked %}
             <b>Date Checked:</b> {{ row.date_checked }}

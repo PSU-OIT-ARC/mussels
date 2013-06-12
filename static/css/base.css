@@ -24,8 +24,29 @@ select[multiple] {
     color:#ff0000;
 }
 
-#map-canvas { 
-    height: 100% 
+#map { 
+    height: 100%;
+    width: 100%;
+}
+
+#overlay {
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    background:#000;
+    opacity:.7;
+    display:none;
+}
+
+#search-button {
+
+}
+
+#search-button:hover {
+    background:#999999;
+    cursor:pointer;
 }
 
 .panel {
@@ -63,3 +84,33 @@ select[multiple] {
     padding-right:5px;
     vertical-align:middle;
 }
+
+#search {
+    position:absolute;
+    top:50%;
+    left:50%;
+    z-index:101;
+    width:500px;
+    height:500px;
+    margin-top: -250px;
+    margin-left:-250px;
+    display:none;
+}
+
+#loading {
+    position:absolute;
+    top:50%;
+    left:50%;
+    z-index:101;
+    width:500px;
+    height:100px;
+    margin-top: -50px;
+    margin-left:-250px;
+    display:none;
+    color:#ffffff;
+    font-size:48px;
+    font-family:monospace;
+    line-height:0px;
+    text-align:center;
+}
+
