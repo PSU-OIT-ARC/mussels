@@ -59,6 +59,7 @@ class Substrate(models.Model):
 class Waterbody(models.Model):
     waterbody_id = models.AutoField(primary_key=True, db_column="waterbody_id")
     name = models.CharField(db_column="waterbody_name", max_length=255)
+    nhdid = models.CharField(db_column="nhdid", max_length=20, verbose_name="NHD ID", blank=True)
 
     class Meta:
         db_table = 'waterbodies'
@@ -95,6 +96,9 @@ class User(models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
 
+    def name(self):
+        return unicode(self)
+
 
 class Agency(models.Model):
     agency_id = models.AutoField(primary_key=True, db_column="agency_id")
@@ -124,10 +128,10 @@ class ObservationManager(models.GeoManager):
         data
         """
         # mapping between the columns in the query, and their name
-        keys = ["substrate_id", "the_geom", "the_geom_plain", "specie", "substrates", "date_checked", "waterbody", "description", "agency"]
+        keys = ["observation_id", "the_geom", "the_geom_plain", "specie", "substrates", "date_checked", "waterbody", "description", "agency"]
         sql = ["""
             SELECT 
-                id as substrate_id, 
+                id as observation_id, 
                 st_askml(dv.the_geom) as the_geom, 
                 st_AsEWKT(dv.the_geom) as the_geom_plain,
                 dv.status as status,
@@ -145,15 +149,15 @@ class ObservationManager(models.GeoManager):
         # the caller can pass in kwargs for the search criteria.
         # For each criteria, we add the apprpriate WHERE clause, and append any
         # necessary arguments to the args array
-        if "substrate" in kwargs:
-            args.append("%" + kwargs['substrate'] + "%")
-            sql.append("AND dv.substrate_type LIKE %s")
-        if "specie" in kwargs:
-            args.append(kwargs['specie'])
-            sql.append("AND dv.status = %s")
         if "id" in kwargs:
             args.append(kwargs['id'])
             sql.append("AND id = %s")
+        if "waterbody" in kwargs:
+            args.append(kwargs['waterbody'])
+            sql.append("AND waterbody_name = %s")
+        if "agency" in kwargs:
+            args.append(kwargs['agency'])
+            sql.append("AND agency = %s")
         if "species" in kwargs:
             # this is the case where the caller wants to return results that
             # have multiple statuses ORd together using a SQL IN()
@@ -161,6 +165,14 @@ class ObservationManager(models.GeoManager):
             sql.append("AND dv.status IN(" + (", ".join(["%s" for _ in kwargs['species']])) + ")")
             # add all the arguments to it
             for specie in kwargs['species']:
+                args.append(specie)
+        if "substrates" in kwargs:
+            # this is the case where the caller wants to return results that
+            # have multiple statuses ORd together using a SQL IN()
+            # add the IN clause
+            sql.append("AND dv.substrate_type IN(" + (", ".join(["%s" for _ in kwargs['substrates']])) + ")")
+            # add all the arguments to it
+            for specie in kwargs['substrates']:
                 args.append(specie)
 
         # construct and execute the sql

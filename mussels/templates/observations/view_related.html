@@ -1,10 +1,8 @@
-{% extends "base.html" %}
-{% block body %}
-<table>
+{% extends "observations/base.html" %}
+{% block content %}
+<ol>
     {% for object in objects %}
-        <tr>
-            <td><a href="{% url 'observations-edit-related' model object.pk %}">{{ object.name }}</a></td>
-        </tr>
+        <li><a href="{% url 'observations-edit-related' model object.pk %}">{{ object.name }}</a></li>
     {% endfor %}
-</table>
+</ol>
 {% endblock %}

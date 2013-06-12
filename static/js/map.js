@@ -87,23 +87,42 @@ function stopLoading(){
     clearInterval(loading_bar_time_id);
 }
 
+function buildKwargs(){
+    // generate the search parameters based on the input from the form
+    var kwargs = {}
+    var species = ['lame'] // jQuery won't create a querystring with an empty array, so we add something to it
+    $('.specie-checkbox:checked').each(function(){
+        species.push($(this).val());
+    });
+    kwargs['species'] = species;
+
+    var substrates = ['lame']
+    $('.substrate-checkbox:checked').each(function(){
+        substrates.push($(this).val());
+    });
+    kwargs['substrates'] = substrates
+
+    var waterbody = $('#waterbody').val();
+    if($.trim(waterbody) != ""){
+        kwargs['waterbody'] = waterbody;
+    }
+
+    var agency = $('#agency').val();
+    if($.trim(agency) != ""){
+        kwargs['agency'] = agency;
+    }
+
+    return kwargs;
+}
+
 function applyClick(){
     // when search criteria is entered, clear everything on the map
     clear()
     hideSearch();
-
-    // generate the search parameters based on the input from the form
-    var species = []
-    $('.status-checkbox:checked').each(function(){
-        species.push($(this).val());
-    });
-    if(species.length == 0){
-        // jQuery won't create a querystring with an empty array, so we add something to it
-        species.push("lame") 
-    }
+    var kwargs = buildKwargs();
 
     // fetch all the markers and render them
-    fetchMarkers(renderMarkers, {"species": species})
+    fetchMarkers(renderMarkers, kwargs)
 }
 
 function clear(){

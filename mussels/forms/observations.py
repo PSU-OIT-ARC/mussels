@@ -44,6 +44,7 @@ class ObservationForm(forms.ModelForm):
             'agency',
             'clr_substrate_id',
             'substrates',
+            'user',
         )
 
 class ObservationRelatedForm(forms.ModelForm):
@@ -59,14 +60,20 @@ class ObservationRelatedForm(forms.ModelForm):
             # get all the substrates related to this instance. fancy reflection
             # stuff going down here
             model_name = self.instance._meta.object_name.lower()
-            filter = {model_name + "_id": self.instance.pk}
+            # these is a special case for the substrate model, since it is a
+            # many2many column
+            if model_name == "substrate":
+                filter = {"substrates": self.instance.pk}
+            else:
+                filter = {model_name + "_id": self.instance.pk}
+
             self.related_observations = Observation.objects.filter(**filter).select_related(
                 'agency',
                 'specie',
                 'substrates',
                 'waterbody',
                 'user',
-            )
+            ).prefetch_related("substrates")
 
     def clean_delete(self):
         delete = self.cleaned_data['delete']
@@ -85,16 +92,43 @@ class ObservationRelatedForm(forms.ModelForm):
 class WaterbodyForm(ObservationRelatedForm):
     class Meta:
         model = Waterbody
-        fields = ('name',)
-
+        fields = ('name', 'nhdid')
 
 class SubstrateForm(ObservationRelatedForm):
     class Meta:
         model = Substrate
         fields = ('name',)
 
-
 class AgencyForm(ObservationRelatedForm):
     class Meta:
         model = Agency
         fields = ('name',)
+
+class SpecieForm(ObservationRelatedForm):
+    class Meta:
+        model = Specie
+        fields = ('name',)
+
+class UserForm(ObservationRelatedForm):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+            'title',
+            'address1',
+            'address2',
+            'city',
+            'state',
+            'zip',
+            'phone1',
+            'phone2',
+            'email',
+            'reminder',
+            'winter_hold_start',
+            'winter_hold_stop',
+            'admin_notes',
+            'need_new_mesh',
+            'is_active',
+        )

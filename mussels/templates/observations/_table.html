@@ -1,9 +1,10 @@
-<table>
+<table id="observations">
     <thead>
         <tr>
             <th>CLR Substrate ID</th>
             <th>Lat</th>
             <th>Lon</th>
+            <th>Date</th>
             <th>Waterbody</th>
             <th>Substrates</th>
             <th>Specie</th>
@@ -15,18 +16,25 @@
         </tr>
     </thead>
     <tbody>
-        {% for observation in form.related_observations %}
+        {% for observation in observations %}
             <tr>
-                <td>{{ substrate.clr_substrate_id }}</td>
-                <td>{{ substrate.to_point.1 }}</td>
-                <td>{{ substrate.to_point.0 }}</td>
-                <td>{{ substrate.waterbody }}</td>
-                <td>{{ substrate.substrates.all|join:", " }}</td>
-                <td>{{ substrate.specie }}</td>
-                <td>{{ substrate.user.first_name }} {{ substrate.user.last_name }}</td>
-                <td>{{ substrate.agency }}</td>
-                <td>{{ substrate.user.user_id }}</td>
-                <td>{{ substrate.is_approved }}</td>
+                <td>{{ observation.clr_substrate_id }}</td>
+                <td>{{ observation.to_point.1 }}</td>
+                <td>{{ observation.to_point.0 }}</td>
+                <td>{{ observation.date_checked }}</td>
+                <td>{{ observation.waterbody }}</td>
+                <td>{{ observation.substrates.all|join:", " }}</td>
+                <td>{{ observation.specie }}</td>
+                <td>{{ observation.user }}</td>
+                <td>{{ observation.agency }}</td>
+                <td>{{ observation.user.user_id }}</td>
+                <td>
+                    {% if not observation.is_approved %}
+                        <strong class="errorlist">{{ observation.is_approved }}</strong>
+                    {% else %}
+                        {{ observation.is_approved }}
+                    {% endif %}
+                </td>
                 <td><a href="{% url 'observations-edit' observation.pk %}">Edit</a></td>
             </tr>
         {% endfor %}

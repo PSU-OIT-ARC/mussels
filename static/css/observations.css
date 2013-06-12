@@ -1,0 +1,38 @@
+html {
+    width:960px;
+    margin:auto;
+}
+
+body {
+    background-color:#fff;
+}
+
+#nav {
+    margin-left:0;
+    padding-left:0;
+}
+
+#nav li {
+    float:left; 
+    margin-right:15px;
+    list-style-type:none;
+}
+
+#observations {
+    border-spacing:0;
+    font-size:12px;
+}
+
+#observations td {
+    padding-left:3px;
+    padding-right:3px;
+}
+
+#observations tr:nth-child(even) {
+    background-color:#efefef;
+}
+
+.pagination {
+    margin-top:10px;
+    margin-bottom:10px;
+}

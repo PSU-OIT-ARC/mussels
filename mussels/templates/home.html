@@ -4,6 +4,18 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/map.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/markerclusterer.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&key=AIzaSyBjGd2GxWliijQM57ccfR5lbF_1UewlBLg&sensor=false"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        WATERBODIES = {{ waterbodies_json|safe }}
+        $('#waterbody').autocomplete({
+            // only show the first couple results for autocomplete
+            source: function(request, response){
+                var results = $.ui.autocomplete.filter(WATERBODIES, request.term);
+                response(results.slice(0, 5));
+            }
+        });
+    });
+    </script>
 {% endblock %}
 {% block body %}
 
@@ -30,28 +42,40 @@
 
 
 <div id="search" class="panel">
-    <h4>Stations by species</h4>
-    <ul>
-        {% for specie in species %}
-            <li><label><input class="status-checkbox" type="checkbox" value="{{ specie.name }}" checked="checked" />{{ specie.name }}</label></li>
-        {% endfor %}
-    </ul>
+    <h2>Search &amp; Filter</h2>
+    <table>
+        <tr>
+            <th>Species</th>
+            <th>Substrates</th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    {% for specie in species %}
+                        <li><label class="sublabel"><input class="specie-checkbox" type="checkbox" value="{{ specie.name }}" checked="checked" />{{ specie.name }}</label></li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    {% for substrate in substrates %}
+                        <li><label class="sublabel"><input class="substrate-checkbox" type="checkbox" value="{{ substrate.name }}" checked="checked" />{{ substrate.name }}</label></li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    </table>
 
-    <h4>Waterbodies</h4>
-    <select name="waterbody" id="waterbody">
-    {% for waterbody in waterbodies %}
-        <option value="{{ waterbody.name }}">{{ waterbody.name }}</option>
-    {% endfor %}
-    </select>
+    <label>Waterbody</label>
+    <input type="text" name="waterbody" id="waterbody" />
 
-    <h4>Agencies</h4>
+    <label>Agency</label>
     <select name="agency" id="agency">
+        <option value="">Any</option>
     {% for agency in agencies %}
         <option value="{{ agency.name }}">{{ agency.name }}</option>
     {% endfor %}
     </select>
-
-
 
     <input type="button" name="button" value="Apply" id="apply-button" />
 </div>

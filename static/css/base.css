@@ -8,6 +8,10 @@ body {
     padding: 0 
 }
 
+a:link, a:visited, a:hover {
+    color:#445f8d;
+}
+
 h4 {
     margin-top:0px;
 }
@@ -22,6 +26,10 @@ select[multiple] {
 
 .errorlist {
     color:#ff0000;
+}
+
+.clear {
+    clear:both;
 }
 
 #map { 
@@ -45,8 +53,13 @@ select[multiple] {
 }
 
 #search-button:hover {
-    background:#999999;
+    color:#fff;
     cursor:pointer;
+    background-color:#445f8d;
+}
+
+#search-button:hover a {
+    color:#fff;
 }
 
 .panel {
@@ -90,11 +103,27 @@ select[multiple] {
     top:50%;
     left:50%;
     z-index:101;
-    width:500px;
-    height:500px;
-    margin-top: -250px;
-    margin-left:-250px;
+    width: 400px;
+    height:440px;
+    margin-top: -210px;
+    margin-left:-200px;
     display:none;
+}
+
+#search label {
+    font-weight:bold;
+    margin-top:10px;
+}
+
+#apply-button {
+    display:block;
+    margin:auto;
+    margin-top:10px;
+}
+
+#search label.sublabel {
+    font-weight:inherit;
+    margin-top:inherit;
 }
 
 #loading {

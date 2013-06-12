@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/observations.css" media="screen" />
+{% endblock %}
+{% block body %}
+<h1>Administration</h1>
+<ul id="nav">
+    <li><a href="{% url 'observations-view' %}">Observations</a></li>
+    <li><a href="{% url 'observations-view-related' 'specie' %}">Species</a></li>
+    <li><a href="{% url 'observations-view-related' 'agency' %}">Agencies</a></li>
+    <li><a href="{% url 'observations-view-related' 'substrate' %}">Substrates</a></li>
+    <li><a href="{% url 'observations-view-related' 'waterbody' %}">Waterbodies</a></li>
+    <li><a href="{% url 'observations-view-related' 'user' %}">Users</a></li>
+</ul>
+
+<div class="clear"></div>
+<hr />
+
+{% block content %}
+
+{% endblock %}
+
+{% endblock %}
+
