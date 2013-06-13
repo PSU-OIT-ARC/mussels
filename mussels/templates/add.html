@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Mussel Report Form</h1>
+<form method="post" action="" id="add-form">
+{% csrf_token %}
+
+{{ form.non_field_errors }}
+
+<p>* indicates a required field</p>
+
+<fieldset>
+    <legend>Location</legend>
+
+    <div class="lat">
+        <label>Latitude* <span class="unit">decimal degrees</span></label>
+        {{ form.lat.errors }}
+        {{ form.lat }}
+    </div>
+
+    <div class="lon">
+        <label>Longitude* <span class="unit">decimal degrees</span></label>
+        {{ form.lon.errors }}
+        {{ form.lon }}
+    </div>
+    <div class="clear"></div>
+    <label>Waterbody*</label>
+    {{ form.waterbody.errors }}
+    {{ form.waterbody }}
+    {{ form.other_waterbody.errors }}
+    <label class="sublabel">Other {{ form.other_waterbody }}</label>
+
+    <label>Physical Description</label>
+    {{ form.physical_description.errors }}
+    {{ form.physical_description }}
+
+</fieldset>
+
+<fieldset>
+    <legend>Sample</legend>
+
+    <label>Date Sampled <span class="unit">YYYY-MM-DD</span></label>
+    {{ form.date_checked.errors }}
+    {{ form.date_checked }}
+    <div class="clear"></div>
+
+    <div class="substrate-types">
+        <label>Substrate Types*</label>
+        {{ form.substrates.errors }}
+        {{ form.substrates }}
+    </div>
+
+    <div class="species-detected">
+        <label>Species Detected*</label>
+        {{ form.specie.errors }}
+        {{ form.specie }}
+    </div>
+</fieldset>
+
+
+<fieldset>
+    <legend>Reporter</legend>
+
+    <label>Agency*</label>
+    {{ form.agency.errors }}
+    {{ form.agency }}
+    {{ form.other_agency.errors }}
+    <label class="sublabel">Other {{ form.other_agency }}</label>
+
+    <label>Email</label>
+    {{ form.email.errors }}
+    {{ form.email }}
+
+    
+    <!--
+    <div id="additional-information">
+        <div class="first-name">
+            <label>First Name</label>
+            {{ form.first_name.errors }}
+            {{ form.first_name }}
+        </div>
+
+        <div class="last-name">
+            <label>Last Name</label>
+            {{ form.last_name.errors }}
+            {{ form.last_name }}
+        </div>
+
+        <div class="clear"></div>
+
+        <label>Address 1</label>
+        {{ form.address_1.errors }}
+        {{ form.address_1 }}
+
+        <label>Address 2</label>
+        {{ form.address_2.errors }}
+        {{ form.address_2 }}
+
+        <label>City</label>
+        {{ form.city.errors }}
+        {{ form.city }}
+
+        <label>State/Province</label>
+        {{ form.state.errors }}
+        {{ form.state }}
+
+        <label>Zip</label>
+        {{ form.zip.errors }}
+        {{ form.zip }}
+
+        <label>Phone</label>
+        {{ form.phone.errors }}
+        {{ form.phone }}
+    </div>
+    -->
+
+</fieldset>
+
+<input type="submit" name="submit" value="Submit" />
+
+</form>
+{% endblock %}

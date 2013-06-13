@@ -12,6 +12,10 @@ a:link, a:visited, a:hover {
     color:#445f8d;
 }
 
+legend {
+    font-weight:bold;
+}
+
 h4 {
     margin-top:0px;
 }
@@ -143,3 +147,72 @@ select[multiple] {
     text-align:center;
 }
 
+#add-form {
+
+}
+
+#add-form .lat {
+    float:left;
+}
+
+#add-form .lon {
+    float:left;
+}
+
+#add-form label {
+    font-weight:bold;
+    color:#555555;
+}
+
+#add-form .sublabel {
+    font-style:italic;
+    font-weight:normal;
+    margin-top:0px;
+}
+
+#add-form label {
+    margin-top:10px;
+}
+
+#add-form legend {
+    font-size:18px;
+}
+
+#add-form .substrate-types {
+    float:left;
+}
+
+#add-form .species-detected {
+    float:left;
+    margin-left:50px;
+}
+
+#add-form ul.errorlist {
+    font-size:12px;
+    font-style:italic;
+}
+
+#add-form  ul {
+    list-style-type: none;
+    margin-left:0;
+    padding-left:0;
+    margin-top:0;
+    margin-bottom:0;
+}
+
+#add-form .species-detected ul label {
+    font-style:italic;
+    font-weight:normal;
+    list-style-type: none;
+    margin-top:0px;
+}
+
+#add-form .first-name, #add-form .last-name {
+    float:left;
+}
+
+#add-form .unit {
+    font-size:11px; 
+    line-height:0;
+    font-weight:normal;
+}

@@ -71,22 +71,22 @@ class Waterbody(models.Model):
 
 class User(models.Model):
     user_id = models.AutoField(primary_key=True, db_column="uid")
-    username = models.CharField(db_column="username", max_length=255)
-    first_name = models.CharField(db_column="fname", max_length=255)
-    last_name = models.CharField(db_column="lname", max_length=255)
-    title = models.CharField(db_column="title", max_length=255)
-    address1 = models.CharField(db_column="address1", max_length=255)
-    address2 = models.CharField(db_column="address2", max_length=255)
-    city = models.CharField(db_column="city", max_length=255)
-    state = models.CharField(db_column="state", max_length=255)
-    zip = models.CharField(db_column="zip", max_length=255)
-    phone1 = models.CharField(db_column="phone1", max_length=255)
-    phone2 = models.CharField(db_column="phone2", max_length=255)
-    email = models.CharField(db_column="email", max_length=255)
-    reminder = models.CharField(db_column="reminder", max_length=255)
-    winter_hold_start = models.CharField(db_column="winter_hold_start", max_length=255)
-    winter_hold_stop = models.CharField(db_column="winter_hold_stop", max_length=255)
-    admin_notes = models.CharField(db_column="admin_notes", max_length=255)
+    username = models.CharField(db_column="username", max_length=255, blank=True)
+    first_name = models.CharField(db_column="fname", max_length=255, blank=True)
+    last_name = models.CharField(db_column="lname", max_length=255, blank=True)
+    title = models.CharField(db_column="title", max_length=255, blank=True)
+    address1 = models.CharField(db_column="address1", max_length=255, blank=True)
+    address2 = models.CharField(db_column="address2", max_length=255, blank=True)
+    city = models.CharField(db_column="city", max_length=255, blank=True)
+    state = models.CharField(db_column="state", max_length=255, blank=True)
+    zip = models.CharField(db_column="zip", max_length=255, blank=True)
+    phone1 = models.CharField(db_column="phone1", max_length=255, blank=True)
+    phone2 = models.CharField(db_column="phone2", max_length=255, blank=True)
+    email = models.CharField(db_column="email", max_length=255, blank=True)
+    reminder = models.CharField(db_column="reminder", max_length=255, blank=True)
+    winter_hold_start = models.CharField(db_column="winter_hold_start", max_length=255, blank=True)
+    winter_hold_stop = models.CharField(db_column="winter_hold_stop", max_length=255, blank=True)
+    admin_notes = models.CharField(db_column="admin_notes", max_length=255, blank=True)
     need_new_mesh = models.BooleanField(db_column="need_new_mesh", default=False)
     is_active = models.BooleanField(db_column="active", default=True)
 
@@ -200,11 +200,17 @@ class ObservationManager(models.GeoManager):
 
 class Observation(models.Model):
     observation_id = models.AutoField(primary_key=True, db_column="substrate_id")
-    waterbody = models.ForeignKey(Waterbody, db_column="waterbody_id")
+    # null=true only because it helps on the PublicObservationForm, when a user
+    # enters an "other" waterbody. We don't actually want to store null in this
+    # column
+    waterbody = models.ForeignKey(Waterbody, db_column="waterbody_id", null=True, blank=True)
     specie = models.ForeignKey(Specie, db_column="status_id")
     date_checked = models.DateField(db_column="date_checked")
     physical_description = models.TextField()
-    agency = models.ForeignKey(Agency, db_column="agency_id")
+    # null=true only because it helps on the PublicObservationForm, when a user
+    # enters an "other" agency. We don't actually want to store null in this
+    # column
+    agency = models.ForeignKey(Agency, db_column="agency_id", null=True, blank=True) 
     is_approved = models.BooleanField(db_column="approved", default=False)
     clr_substrate_id = models.IntegerField(db_column="clr_substrate_id", default=0, blank=True)
     user = models.ForeignKey(User, db_column="user_id")

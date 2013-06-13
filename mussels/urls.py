@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     url(r'^$', home.home, name='home'),
     url(r'^kml/?$', observations.to_kml, name='observations-to-kml'),
     url(r'^json/?$', observations.to_json, name='observations-to-json'),
+    url(r'^add/?$', home.add, name="add"),
+    url(r'^thanks/?$', home.thanks, name="thanks"),
 
     url(r'^admin/?$', observations.admin, name='observations-admin'),
 
