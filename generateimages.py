@@ -3,12 +3,15 @@ from itertools import combinations, chain
 import subprocess
 import os
 import shutil
+"""
+Generate all the possible combinations of substrates, and create an icon for
+that combination.
+"""
 
 os.chdir("static/img/kml_icons")
 
 def powerset(iterable):
     s = list(iterable)
-    # a normal powerset would use combinations, not permutations
     return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
 
 status = ["artificial", "natural", "other", "plankton", "rov", "scuba", "unspecified"]
@@ -23,7 +26,7 @@ for mussel in mussels:
         if len(s) == 1:
             shutil.copyfile(files[0], filename)
         else:
-            cmd = ['composite', '-gravity', 'center']
+            cmd = ['convert', '-background', 'transparent', '-flatten']
             cmd.extend(files)
             cmd.append(filename)
             print " ".join(cmd)

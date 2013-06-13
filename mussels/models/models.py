@@ -15,7 +15,7 @@ class MachineNameManager(models.Manager):
         Convert a name to a machine name
         """
         # we cache the mapping to avoid extra db queries
-        if not hasattr(self, "name_to_machine_name"):
+        if (not hasattr(self, "name_to_machine_name")) or (name not in self.name_to_machine_name):
             self.name_to_machine_name = {}
             # fetch the machine names
             rows = self.all()
