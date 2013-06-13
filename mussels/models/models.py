@@ -27,8 +27,8 @@ class MachineNameManager(models.Manager):
 class Specie(models.Model):
     specie_id = models.AutoField(primary_key=True, db_column="status_id")
     name = models.CharField(db_column="status_text", max_length=255)
-    order_id = models.IntegerField(db_column="order_id")
-    machine_name = models.CharField(db_column="machine_name", max_length=30)
+    order_id = models.IntegerField(db_column="order_id", help_text="The order this should appear in on the legend and search form")
+    machine_name = models.CharField(db_column="machine_name", max_length=30, help_text="The name used for the map icon")
 
     objects = MachineNameManager()
 
@@ -43,8 +43,8 @@ class Specie(models.Model):
 class Substrate(models.Model):
     substrate_id = models.AutoField(primary_key=True, db_column="type_id")
     name = models.CharField(db_column="type_name", max_length=255)
-    order_id = models.IntegerField(db_column="order_id")
-    machine_name = models.CharField(db_column="machine_name", max_length=30)
+    order_id = models.IntegerField(db_column="order_id", help_text="The order this should appear in on the legend and search form")
+    machine_name = models.CharField(db_column="machine_name", max_length=30, help_text="The name used for the map icon")
 
     objects = MachineNameManager()
 

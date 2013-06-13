@@ -16,3 +16,7 @@ had to do:
     cp mussels/example_settings.py mussels/local_settings.py
     vim mussels/local_settings.py # adjust settings
 
+## Generate Image
+
+    mkdir static/img/generated
+    python generateimages.py

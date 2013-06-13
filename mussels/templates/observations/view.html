@@ -1,6 +1,8 @@
 {% extends "observations/base.html" %}
 {% block content %}
 
+<a href="{% url 'observations-edit' %}">Add</a>
+
 <div class="pagination">
     <span class="step-links">
         {% if page.has_previous %}

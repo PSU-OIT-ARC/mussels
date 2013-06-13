@@ -45,6 +45,7 @@ class ObservationForm(forms.ModelForm):
             'clr_substrate_id',
             'substrates',
             'user',
+            'is_approved',
         )
 
 class ObservationRelatedForm(forms.ModelForm):
@@ -97,7 +98,7 @@ class WaterbodyForm(ObservationRelatedForm):
 class SubstrateForm(ObservationRelatedForm):
     class Meta:
         model = Substrate
-        fields = ('name',)
+        fields = ('name', 'order_id', 'machine_name')
 
 class AgencyForm(ObservationRelatedForm):
     class Meta:
@@ -107,7 +108,7 @@ class AgencyForm(ObservationRelatedForm):
 class SpecieForm(ObservationRelatedForm):
     class Meta:
         model = Specie
-        fields = ('name',)
+        fields = ('name', 'order_id', 'machine_name')
 
 class UserForm(ObservationRelatedForm):
     class Meta:
