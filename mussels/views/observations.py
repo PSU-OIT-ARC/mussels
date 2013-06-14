@@ -8,10 +8,10 @@ from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import fromstr
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.template.loader import render_to_string
-from mussels.forms.observations import ObservationForm, WaterbodyForm, SubstrateForm, AgencyForm, SpecieForm, UserForm
+from mussels.forms.observations import ObservationForm, WaterbodyForm, SubstrateForm, AgencyForm, SpecieForm, UserForm, ObservationSearchForm
 from mussels.models import Observation, Agency, Waterbody, Specie, Substrate, User
 
-model_to_form_class = {
+MODEL_TO_FORM_CLASS = {
     'waterbody': WaterbodyForm,
     'substrate': SubstrateForm,
     'agency': AgencyForm,
@@ -19,7 +19,7 @@ model_to_form_class = {
     'user': UserForm, 
 }
 
-model_to_model_class = {
+MODEL_TO_MODEL_CLASS = {
     'waterbody': Waterbody,
     'substrate': Substrate,
     'agency': Agency,
@@ -35,6 +35,16 @@ def admin(request):
 
 def view(request):
     observations = Observation.objects.all().select_related("waterbody", "agency", "specie", "user").prefetch_related("substrates").order_by("-observation_id")
+
+    if request.GET:
+        form = ObservationSearchForm(request.GET)
+        if form.is_valid():
+            for k, v in form.cleaned_data.items():
+                if v is not None:
+                    observations = observations.filter(**{k: v})
+    else:
+        form = ObservationSearchForm()
+    
     paginator = Paginator(observations, 100)
 
     page = request.GET.get('page')
@@ -45,8 +55,16 @@ def view(request):
     except EmptyPage:
         page = paginator.page(paginator.num_pages)
 
+    # to preserve search parameters with pagination, we construct a querystring
+    # from them, and use that in the pagination urls 
+    search_params = request.GET.copy()
+    search_params.pop("page", None)
+    search_params = "&".join("%s=%s" % (k, v) for k,v in search_params.items())
+
     rendered = render(request, "observations/view.html", {
         'page': page,
+        'form': form,
+        'search_params': search_params,
     })
 
     return rendered
@@ -73,7 +91,7 @@ def edit(request, observation_id=None):
     })
 
 def view_related_tables(request, model):
-    model_class = model_to_model_class[model]
+    model_class = MODEL_TO_MODEL_CLASS[model]
     objects = model_class.objects.all()
     return render(request, 'observations/view_related.html', {
         'objects': objects,
@@ -81,7 +99,7 @@ def view_related_tables(request, model):
     })
 
 def edit_related_tables(request, model, pk=None):
-    form_class = model_to_form_class[model]
+    form_class = MODEL_TO_FORM_CLASS[model]
 
     instance = None
     if pk is not None:

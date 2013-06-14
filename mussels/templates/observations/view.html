@@ -1,12 +1,47 @@
 {% extends "observations/base.html" %}
 {% block content %}
 
-<a href="{% url 'observations-edit' %}">Add</a>
+<p><a href="{% url 'observations-edit' %}">Add</a></p>
+
+
+<form method="get" action="">
+<fieldset>
+    <legend>Search</legend>
+    {% csrf_token %}
+    <table>
+        <tr>
+            <th>Date Checked</th>
+            <th>Waterbody</th>
+            <th>Agency</th>
+        </tr>
+        <tr>
+            <th>{{ form.date_checked }}</th>
+            <th>{{ form.waterbody }}</th>
+            <th>{{ form.agency }}</th>
+        </tr>
+        <tr>
+            <th>Specie</th>
+            <th>User</th>
+            <th>Approved</th>
+        </tr>
+        <tr>
+            <th>{{ form.specie }}</th>
+            <th>{{ form.user }}</th>
+            <th>{{ form.is_approved }}</th>
+        </tr>
+    </table>
+    <br />
+    <input type="submit" name="submit" value="Search" />
+</fieldset>
+
+</form>
+
+<hr />
 
 <div class="pagination">
     <span class="step-links">
         {% if page.has_previous %}
-            <a href="?page={{ page.previous_page_number }}">previous</a>
+            <a href="?page={{ page.previous_page_number }}&{{ search_params }}">previous</a>
         {% endif %}
 
         <span class="current">
@@ -14,7 +49,7 @@
         </span>
 
         {% if page.has_next %}
-            <a href="?page={{ page.next_page_number }}">next</a>
+            <a href="?page={{ page.next_page_number }}&{{ search_params }}">next</a>
         {% endif %}
     </span>
 </div>
@@ -24,7 +59,7 @@
 <div class="pagination">
     <span class="step-links">
         {% if page.has_previous %}
-            <a href="?page={{ page.previous_page_number }}">previous</a>
+            <a href="?page={{ page.previous_page_number }}&{{ search_params }}">previous</a>
         {% endif %}
 
         <span class="current">
@@ -32,7 +67,7 @@
         </span>
 
         {% if page.has_next %}
-            <a href="?page={{ page.next_page_number }}">next</a>
+            <a href="?page={{ page.next_page_number }}&{{ search_params }}">next</a>
         {% endif %}
     </span>
 </div>

@@ -3,6 +3,14 @@ from mussels.models import Observation, Specie, Substrate, Waterbody, User, Agen
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.geos import Point
 
+class ObservationSearchForm(forms.Form):
+    date_checked = forms.DateField(required=False)
+    waterbody = forms.ModelChoiceField(required=False, queryset=Waterbody.objects.all())
+    agency = forms.ModelChoiceField(required=False, queryset=Agency.objects.all())
+    specie = forms.ModelChoiceField(required=False, queryset=Specie.objects.all())
+    user = forms.ModelChoiceField(required=False, queryset=User.objects.all())
+    is_approved = forms.TypedChoiceField(required=False, choices=((None, "Any"), (True, "Yes"), (False, "No")), coerce=lambda x: None if x is None or x == "None" else x == "True", empty_value=None)
+
 class ObservationForm(forms.ModelForm):
     lat = forms.FloatField()
     lon = forms.FloatField()
