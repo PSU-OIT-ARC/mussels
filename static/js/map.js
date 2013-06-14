@@ -28,6 +28,7 @@ $(document).ready(function(){
     map.setOptions({styles: styles})
     map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById("legend"))
     map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById("search-button"))
+    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById("add-button"))
     // center the map around the US
     // http://stackoverflow.com/questions/2936960/google-maps-api-load-the-us
     var geocoder = new google.maps.Geocoder();
