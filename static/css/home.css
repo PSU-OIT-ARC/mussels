@@ -1,0 +1,110 @@
+body {
+    background-color: #F2F3EE;
+}
+
+h1 {
+    margin-top:0;
+}
+
+#header {
+    background: #141c00 no-repeat center top;
+    background-image:url("../img/header-1.jpg");
+    padding:10px;
+    height:75px;
+}
+
+#header h1 {
+    margin-bottom:0;
+    padding-bottom:0;
+    float:right;
+    margin-right:30px;
+    color:#fff;
+    font-size:18px;
+    margin-top:15px;
+}
+
+#header img {
+    padding-top:20px;
+}
+
+#header-inner, #content-inner {
+    width:800px;
+    margin:auto;
+}
+
+#content {
+    width:800px;
+    margin:auto;
+    background-color:#fff;
+    padding:20px;
+}
+
+#add-form {
+
+}
+
+#add-form .lat {
+    float:left;
+}
+
+#add-form .lon {
+    float:left;
+}
+
+#add-form label {
+    font-weight:bold;
+    color:#555555;
+}
+
+#add-form .sublabel {
+    font-style:italic;
+    font-weight:normal;
+    margin-top:2px;
+}
+
+#add-form label {
+    margin-top:10px;
+}
+
+#add-form legend {
+    font-size:18px;
+}
+
+#add-form .substrate-types {
+    float:left;
+}
+
+#add-form .species-detected {
+    float:left;
+    margin-left:50px;
+}
+
+#add-form ul.errorlist {
+    font-size:12px;
+    font-style:italic;
+}
+
+#add-form  ul {
+    list-style-type: none;
+    margin-left:0;
+    padding-left:0;
+    margin-top:0;
+    margin-bottom:0;
+}
+
+#add-form .species-detected ul label {
+    font-style:italic;
+    font-weight:normal;
+    list-style-type: none;
+    margin-top:0px;
+}
+
+#add-form .first-name, #add-form .last-name {
+    float:left;
+}
+
+#add-form .unit {
+    font-size:11px; 
+    line-height:0;
+    font-weight:normal;
+}

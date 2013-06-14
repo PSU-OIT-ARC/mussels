@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from mussels.models import Specie, Substrate, Waterbody, Agency, Observation, User
-from mussels.forms.observations import PublicObservationForm
+from mussels.forms.home import ObservationForm
 
 def home(request):
     species = Specie.objects.all()
@@ -11,7 +11,7 @@ def home(request):
     waterbodies = Waterbody.objects.all()
     agencies = Agency.objects.all()
     waterbodies_json = json.dumps([w.name for w in waterbodies])
-    return render(request, "home.html", {
+    return render(request, "home/home.html", {
         'species': species,
         'substrates': substrates,
         'waterbodies': waterbodies,
@@ -20,17 +20,18 @@ def home(request):
     })
 
 def thanks(request):
-    return HttpResponse("thanks")
+    return render(request, "home/thanks.html", {
+    })
 
 def add(request):
     if request.POST:
-        form = PublicObservationForm(request.POST)
+        form = ObservationForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('thanks'))
     else:
-        form = PublicObservationForm()
+        form = ObservationForm()
 
-    return render(request, "add.html", {
+    return render(request, "home/add.html", {
         'form': form,
     })

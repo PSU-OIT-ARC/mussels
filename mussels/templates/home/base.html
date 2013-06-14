@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/home.css" media="screen" />
+{% endblock %}
+{% block body %}
+    <div id="header">
+        <div id="header-inner">
+            <a href="{% url 'home' %}"><img src="http://www.pdx.edu/sites/all/themes/pdx_primary/logo.png" /></a>
+            <h1>Mussel Monitoring Map</h1>
+        </div>
+    </div>
+
+    <div id="content">{% block content %}{% endblock %}</div>
+{% endblock %}

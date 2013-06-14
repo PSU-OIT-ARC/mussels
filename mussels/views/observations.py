@@ -34,7 +34,7 @@ def admin(request):
     })
 
 def view(request):
-    observations = Observation.objects.all().select_related("waterbody", "agency", "specie", "user").prefetch_related("substrates")
+    observations = Observation.objects.all().select_related("waterbody", "agency", "specie", "user").prefetch_related("substrates").order_by("-observation_id")
     paginator = Paginator(observations, 100)
 
     page = request.GET.get('page')

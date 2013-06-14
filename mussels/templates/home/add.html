@@ -1,8 +1,15 @@
-{% extends "base.html" %}
-{% block body %}
+{% extends "home/base.html" %}
+{% block content %}
 <h1>Mussel Report Form</h1>
+<p>Fill out the form below to submit your mussel sample information.
+After being reviewed, your sample will appear on the mussel monitoring map.
+</p> 
 <form method="post" action="" id="add-form">
 {% csrf_token %}
+
+{% if form.errors %}
+    <p class="error">Please correct the errors below.</p>
+{% endif %}
 
 {{ form.non_field_errors }}
 
@@ -66,12 +73,6 @@
     {{ form.other_agency.errors }}
     <label class="sublabel">Other {{ form.other_agency }}</label>
 
-    <label>Email</label>
-    {{ form.email.errors }}
-    {{ form.email }}
-
-    
-    <!--
     <div id="additional-information">
         <div class="first-name">
             <label>First Name</label>
@@ -87,13 +88,17 @@
 
         <div class="clear"></div>
 
+        <label>Email</label>
+        {{ form.email.errors }}
+        {{ form.email }}
+
         <label>Address 1</label>
-        {{ form.address_1.errors }}
-        {{ form.address_1 }}
+        {{ form.address1.errors }}
+        {{ form.address1 }}
 
         <label>Address 2</label>
-        {{ form.address_2.errors }}
-        {{ form.address_2 }}
+        {{ form.address2.errors }}
+        {{ form.address2 }}
 
         <label>City</label>
         {{ form.city.errors }}
@@ -108,11 +113,9 @@
         {{ form.zip }}
 
         <label>Phone</label>
-        {{ form.phone.errors }}
-        {{ form.phone }}
+        {{ form.phone1.errors }}
+        {{ form.phone1 }}
     </div>
-    -->
-
 </fieldset>
 
 <input type="submit" name="submit" value="Submit" />
