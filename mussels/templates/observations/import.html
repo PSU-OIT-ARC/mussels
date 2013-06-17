@@ -1,0 +1,9 @@
+{% extends "observations/base.html" %}
+{% block content %}
+<p>Upload a spreadsheet and import the data into the database. The spreadsheet <strong>must</strong> be in the format defined in <a href="{{ STATIC_URL}}/data.xlsx" target="_blank">this example spreadsheet</a>.</p>
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" name="submit" value="save" />
+</form>
+{% endblock %}

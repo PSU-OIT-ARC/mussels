@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^admin/observations/view/?$', observations.view, name='observations-view'),
     url(r'^admin/observations/edit/(\d+)/?$', observations.edit, name='observations-edit'),
     url(r'^admin/observations/add/?$', observations.edit, name='observations-edit'),
+    url(r'^admin/observations/import/?$', observations.import_, name='observations-import'),
 
     url(r'^admin/related/([a-z]+)/?$', observations.view_related_tables, name='observations-view-related'),
     url(r'^admin/related/([a-z]+)/add/?$', observations.edit_related_tables, name='observations-edit-related'),

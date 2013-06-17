@@ -50,6 +50,11 @@ select[multiple] {
     clear:both;
 }
 
+.success {
+    color:#397D02;
+    font-weight:bold;
+}
+
 #map { 
     height: 100%;
     width: 100%;

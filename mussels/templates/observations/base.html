@@ -12,10 +12,20 @@
     <li><a href="{% url 'observations-view-related' 'substrate' %}">Substrates</a></li>
     <li><a href="{% url 'observations-view-related' 'waterbody' %}">Waterbodies</a></li>
     <li><a href="{% url 'observations-view-related' 'user' %}">Users</a></li>
+    <li><a href="{% url 'observations-import' %}">Import Spreadsheet</a></li>
 </ul>
 
 <div class="clear"></div>
+
 <hr />
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 {% block content %}
 

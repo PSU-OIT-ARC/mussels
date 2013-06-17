@@ -2,6 +2,7 @@ from django import forms
 from mussels.models import Observation, Specie, Substrate, Waterbody, User, Agency, ObservationSubstrate
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.geos import Point
+from mussels.models import utils
 
 class ObservationSearchForm(forms.Form):
     date_checked = forms.DateField(required=False)
@@ -10,6 +11,56 @@ class ObservationSearchForm(forms.Form):
     specie = forms.ModelChoiceField(required=False, queryset=Specie.objects.all())
     user = forms.ModelChoiceField(required=False, queryset=User.objects.all())
     is_approved = forms.TypedChoiceField(required=False, choices=((None, "Any"), (True, "Yes"), (False, "No")), coerce=lambda x: None if x is None or x == "None" else x == "True", empty_value=None)
+
+class ObservationImportForm(forms.Form):
+    file = forms.FileField()
+    
+    def clean(self):
+        cleaned_data = super(ObservationImportForm, self).clean()
+        # try to parse the file
+        if cleaned_data.get('file'):
+            self.data = utils.parseObservationsFromFile(cleaned_data['file'].temporary_file_path())
+
+        return cleaned_data
+
+    def save(self):
+        # user objects that are created below are saved in this dict, and keyed
+        # by the user's email address
+        user_cache = {}
+
+        for row in self.data:
+            print row
+            ob = Observation(
+                waterbody=row['waterbody'], 
+                specie=row['specie'], 
+                date_checked=row['date'],
+                physical_description=row['description'],
+                agency=row['agency'],
+                is_approved=True,
+                clr_substrate_id=0,
+                geom=row['point'])
+
+            # attach the user to the observation
+            if row['user'].pk is not None:
+                ob.user = row['user']
+            elif row['email'] in user_cache: 
+                # check the cache to see if the user has already been created.
+                # If it has, use the User from the cache
+                ob.user = user_cache[row['email']]
+            else:
+                # create the user and add to cache so on subsequent iterations
+                # we don't create another user with the same information
+                row['user'].save()
+                user_cache[row['email']] = row['user']
+                ob.user = row['user']
+
+            ob.save()
+            
+            # now add all the substrates
+            for substrate in row['substrates']:
+                st = ObservationSubstrate(substrate=substrate, observation=ob)
+                st.save()
+
 
 class ObservationForm(forms.ModelForm):
     lat = forms.FloatField()

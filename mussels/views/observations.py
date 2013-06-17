@@ -8,8 +8,9 @@ from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import fromstr
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.template.loader import render_to_string
-from mussels.forms.observations import ObservationForm, WaterbodyForm, SubstrateForm, AgencyForm, SpecieForm, UserForm, ObservationSearchForm
+from mussels.forms.observations import ObservationForm, WaterbodyForm, SubstrateForm, AgencyForm, SpecieForm, UserForm, ObservationSearchForm, ObservationImportForm
 from mussels.models import Observation, Agency, Waterbody, Specie, Substrate, User
+from mussels.models import utils
 
 MODEL_TO_FORM_CLASS = {
     'waterbody': WaterbodyForm,
@@ -87,6 +88,20 @@ def edit(request, observation_id=None):
         form = ObservationForm(instance=instance)
 
     return render(request, 'observations/edit.html', {
+        'form': form,
+    })
+
+def import_(request):
+    if request.POST:
+        form = ObservationImportForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Observations imported")
+            return HttpResponseRedirect(reverse("observations-view"))
+    else:
+        form = ObservationImportForm()
+
+    return render(request, 'observations/import.html', {
         'form': form,
     })
 
