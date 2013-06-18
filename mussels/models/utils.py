@@ -6,7 +6,18 @@ from django.contrib.gis.geos import Point
 from .models import Substrate, Waterbody, Specie, User, Agency
 
 def parseObservationsFromFile(path):
-    xl = xlrd.open_workbook(path)
+    """
+    Open the Excel file at location `path`, and try to parse each line
+    according to the format specied by the columns list below. Raises
+    ValidationErrors in there are known problems with the data. Returns a list
+    of dicts, where the keys are the column names below, and values are the
+    appropriate python type for that cell.
+    """
+    try:
+        xl = xlrd.open_workbook(path)
+    except xlrd.XLRDError:
+        raise ValidationError("The file format is invalid. Only Excel documents can be uploaded")
+
     sheet = xl.sheets()[0] 
     columns = [
         'lat',
@@ -29,6 +40,7 @@ def parseObservationsFromFile(path):
         'phone',
     ]
 
+    # loop through every rows in the excel, and create a dict out of it
     rows = []
     for row_index in range(1, sheet.nrows):
         rows.append(dict([(k, sheet.cell(row_index, col_index).value) for col_index, k in enumerate(columns)]))
