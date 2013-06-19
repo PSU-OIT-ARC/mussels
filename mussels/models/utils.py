@@ -154,8 +154,8 @@ def _to_user(email, row):
     # create a user since it doesn't exist (but don't save it yet)
     user = User(
         email=email,
-        first_name=row['first_name'],
-        last_name=row['last_name'],
+        first_name=row['first'],
+        last_name=row['last'],
         address1=row['address1'],
         address2=row['address2'],
         city=row['city'],

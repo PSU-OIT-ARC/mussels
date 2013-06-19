@@ -25,6 +25,7 @@ h1 {
 
 #header img {
     padding-top:20px;
+    float:left;
 }
 
 #header-inner, #content-inner {
