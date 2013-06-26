@@ -23,10 +23,17 @@
 
 <div id="legend" class="panel">
     <h3>Legend</h3>
-    <h4>Specie</h4>
+    <h4>Species</h4>
     <ul>
         {% for specie in species %}
-            <li><img src="{{ STATIC_URL }}/img/kml_cluster/status_{{ specie.machine_name }}_1.png"    alt="{{ specie.name }}" />{{ specie.name }}</li>
+            <li>
+                <img src="{{ STATIC_URL }}/img/kml_cluster/status_{{ specie.machine_name }}_1.png"    alt="{{ specie.name }}" />
+                {% if specie.is_scientific_name %} 
+                    <em>{{ specie.name }}</em>
+                {% else %}
+                    {{ specie.name }}
+                {% endif %}
+            </li>
         {% endfor %}
     </ul>
 
@@ -53,7 +60,15 @@
             <td>
                 <ul>
                     {% for specie in species %}
-                        <li><label class="sublabel"><input class="specie-checkbox" type="checkbox" value="{{ specie.name }}" checked="checked" />{{ specie.name }}</label></li>
+                        <li>
+                            <label class="sublabel"><input class="specie-checkbox" type="checkbox" value="{{ specie.name }}" checked="checked" />
+                                {% if specie.is_scientific_name %} 
+                                    <em>{{ specie.name }}</em>
+                                {% else %}
+                                    {{ specie.name }}
+                                {% endif %}
+                            </label>
+                        </li>
                     {% endfor %}
                 </ul>
             </td>

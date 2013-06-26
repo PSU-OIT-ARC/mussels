@@ -29,6 +29,7 @@ class Specie(models.Model):
     name = models.CharField(db_column="status_text", max_length=255)
     order_id = models.IntegerField(db_column="order_id", help_text="The order this should appear in on the legend and search form")
     machine_name = models.CharField(db_column="machine_name", max_length=30, help_text="The name used for the map icon")
+    is_scientific_name = models.BooleanField(db_column="is_scientific_name", help_text="Determines if italics should be used when displaying on the map")
 
     objects = MachineNameManager()
 
@@ -175,6 +176,8 @@ class ObservationManager(models.GeoManager):
             for specie in kwargs['substrates']:
                 args.append(specie)
 
+        has_scientific_name = set([s.machine_name for s in Specie.objects.filter(is_scientific_name=True)])
+
         # construct and execute the sql
         sql = " ".join(sql)
         cursor = connection.cursor()
@@ -193,6 +196,9 @@ class ObservationManager(models.GeoManager):
             row['substrate_keys'] = sorted([Substrate.objects.to_machine_name(n) for n in row['substrates'].split(", ")])
             # build up a string that represents the filename of the image for this point
             row['image'] = row['specie_key'] + "_" + "_".join(row['substrate_keys'])
+            # is scientific name?
+            if row['specie_key'] in has_scientific_name:
+                row['is_scientific_name'] = True
             rows.append(row)
 
         return rows

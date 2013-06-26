@@ -169,7 +169,7 @@ class AgencyForm(ObservationRelatedForm):
 class SpecieForm(ObservationRelatedForm):
     class Meta:
         model = Specie
-        fields = ('name', 'order_id', 'machine_name')
+        fields = ('name', 'order_id', 'machine_name', 'is_scientific_name')
 
 class UserForm(ObservationRelatedForm):
     class Meta:

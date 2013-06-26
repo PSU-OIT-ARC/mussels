@@ -4,7 +4,7 @@
 {% for row in rows %}
     <Placemark>
         <name>Monitoring station at {{ row.waterbody }}</name>
-        <description><![CDATA[<b>Specie:</b> {{ row.specie }} 
+        <description><![CDATA[<b>Species:</b> {{ row.specie }} 
         <br />
         <b>Substrate:</b> {{ row.substrates }}
         <br />

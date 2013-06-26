@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.geos import Point
+from django.utils.safestring import mark_safe
 from mussels.models import Observation, Specie, Substrate, Waterbody, User, Agency, ObservationSubstrate
 from mussels.forms import observations
 
@@ -37,7 +38,15 @@ class ObservationForm(observations.ObservationForm):
         self.fields['waterbody'].widget.attrs.update({"size": 10})
         self.fields['waterbody'].null = True
 
-        self.fields['specie'].choices = list(self.fields['specie'].choices)[1:]
+        # get the specie choices, and make them italic if necessary
+        species = Specie.objects.all()
+        choices = []
+        for specie in species:
+            if specie.is_scientific_name:
+                choices.append((specie.pk, mark_safe("<em>" + specie.name + "</em>")))
+            else:
+                choices.append((specie.pk, specie.name))
+        self.fields['specie'].choices = choices
 
         self.fields['agency'].choices = list(self.fields['agency'].choices)
         self.fields['agency'].choices[0] = ("", "Other (specify below)")

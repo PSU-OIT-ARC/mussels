@@ -242,9 +242,16 @@ $(document).ready(function(){
 
     // generate the text that should appear inside the balloon window
     function generateBalloonText(row){
+        console.log(row)
         var s = ["<h4>Monitoring station at " + row.waterbody + "</h4>"];
-        s.push("<strong>Specie:</strong> " + row.specie)
+        if(row.is_scientific_name){
+            s.push("<strong>Species:</strong> <em>" + row.specie + "</em>")
+        } else {
+            s.push("<strong>Species:</strong> " + row.specie)
+        }
+
         s.push("<strong>Substrate:</strong> " + row.substrates)
+
         if(row.date_checked){
             s.push("<strong>Date Checked:</strong> " + row.date_checked);
         }
