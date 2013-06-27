@@ -7,6 +7,8 @@ HOME_DIR = os.path.normpath(os.path.join(PROJECT_DIR, '../'))
 
 SERVER_EMAIL = 'django@pdx.edu'
 
+CAS_SERVER_URL = 'https://sso.pdx.edu/cas/login'
+
 # allow the use of wildcards in the INTERAL_IPS setting
 class IPList(list):
     # do a unix-like glob match
@@ -96,6 +98,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'djangocas.backends.CASBackend',
 )
 
 FILE_UPLOAD_HANDLERS = ("django.core.files.uploadhandler.TemporaryFileUploadHandler",)

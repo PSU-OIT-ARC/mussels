@@ -6,6 +6,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import fromstr
+from django.contrib.auth.decorators import login_required
+from .decorators import staff_member_required
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.template.loader import render_to_string
 from mussels.forms.observations import ObservationForm, WaterbodyForm, SubstrateForm, AgencyForm, SpecieForm, UserForm, ObservationSearchForm, ObservationImportForm
@@ -28,12 +30,15 @@ MODEL_TO_MODEL_CLASS = {
     'user': User,
 }
 
-
+@login_required
+@staff_member_required
 def admin(request):
     return render(request, "observations/admin.html", {
 
     })
 
+@login_required
+@staff_member_required
 def view(request):
     observations = Observation.objects.all().select_related("waterbody", "agency", "specie", "user").prefetch_related("substrates").order_by("-observation_id")
 
@@ -70,6 +75,8 @@ def view(request):
 
     return rendered
 
+@login_required
+@staff_member_required
 def edit(request, observation_id=None):
     """
     View for adding or editing a observation observation
@@ -91,6 +98,8 @@ def edit(request, observation_id=None):
         'form': form,
     })
 
+@login_required
+@staff_member_required
 def import_(request):
     if request.POST:
         form = ObservationImportForm(request.POST, request.FILES)
@@ -105,6 +114,8 @@ def import_(request):
         'form': form,
     })
 
+@login_required
+@staff_member_required
 def view_related_tables(request, model):
     model_class = MODEL_TO_MODEL_CLASS[model]
     objects = model_class.objects.all()
@@ -113,6 +124,8 @@ def view_related_tables(request, model):
         'model': model,
     })
 
+@login_required
+@staff_member_required
 def edit_related_tables(request, model, pk=None):
     form_class = MODEL_TO_FORM_CLASS[model]
 

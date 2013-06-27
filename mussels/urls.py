@@ -27,6 +27,10 @@ urlpatterns = patterns('',
     url(r'^admin/related/([a-z]+)/add/?$', observations.edit_related_tables, name='observations-edit-related'),
     url(r'^admin/related/([a-z]+)/(\d+)/?$', observations.edit_related_tables, name='observations-edit-related'),
 
+    # auth
+    url(r'^accounts/login/$', 'djangocas.views.login', name='accounts-login'),
+    url(r'^accounts/logout/$', 'djangocas.views.logout', name='accounts-logout', kwargs={"next_page": "/"}),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
