@@ -13,8 +13,8 @@ had to do:
 
 ## Configure
 
-    cp mussels/example_settings.py mussels/local_settings.py
-    vim mussels/local_settings.py # adjust settings
+    cp mussels/settings/local.py.template mussels/settings/local.py
+    vim mussels/settings/local.py # adjust settings
 
 ## Generate Image
 
