@@ -2,7 +2,7 @@ import os
 from fnmatch import fnmatch
 from django.conf import global_settings
 
-PROJECT_DIR = os.path.dirname(__file__)
+PROJECT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "../"))
 HOME_DIR = os.path.normpath(os.path.join(PROJECT_DIR, '../'))
 
 SERVER_EMAIL = 'django@pdx.edu'
@@ -163,4 +163,3 @@ LOGGING = {
     }
 }
 
-from local_settings import *
