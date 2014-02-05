@@ -9,6 +9,8 @@ SERVER_EMAIL = 'django@pdx.edu'
 
 CAS_SERVER_URL = 'https://sso.pdx.edu/cas/login'
 
+AUTH_USER_MODEL = 'models.AdminUser'
+
 # allow the use of wildcards in the INTERAL_IPS setting
 class IPList(list):
     # do a unix-like glob match
@@ -120,7 +122,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
+    #'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
