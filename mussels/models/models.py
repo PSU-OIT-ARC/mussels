@@ -99,7 +99,7 @@ class Waterbody(models.Model):
 
 
 class User(models.Model):
-    user_id = models.AutoField(primary_key=True, db_column="uid")
+    user_id = models.AutoField(primary_key=True, db_column="user_id")
     username = models.CharField(db_column="username", max_length=255, blank=True)
     first_name = models.CharField(db_column="fname", max_length=255, blank=True)
     last_name = models.CharField(db_column="lname", max_length=255, blank=True)
@@ -120,7 +120,7 @@ class User(models.Model):
     is_active = models.BooleanField(db_column="active", default=True)
 
     class Meta:
-        db_table = 'users'
+        db_table = 'reporter'
 
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
