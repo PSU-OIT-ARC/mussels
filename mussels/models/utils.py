@@ -22,7 +22,7 @@ def parseObservationsFromFile(path):
     columns = [
         'lat',
         'lon',
-        'nhdid',
+        'reachcode',
         'waterbody',
         'substrates',
         'specie',
@@ -53,9 +53,9 @@ def parseObservationsFromFile(path):
     except Substrate.DoesNotExist as e:
         raise ValidationError("The substrate '%s' does not exist in the database. You need to create it, or change your spreadsheet on line %d" % (e.substrate, excel_line_number))
     except Waterbody.DoesNotExist as e:
-        raise ValidationError("The waterbody '%s' does not exist in the database. You need to create it, or change your spreadsheet on line %d" % (row['waterbody'] or str(row['nhdid']), excel_line_number))
+        raise ValidationError("The waterbody '%s' does not exist in the database. You need to create it, or change your spreadsheet on line %d" % (row['waterbody'] or str(row['reachcode']), excel_line_number))
     except Waterbody.MultipleObjectsReturned as e:
-        raise ValidationError("The waterbody '%s' is ambiguous because multiple waterbodies exist in the database with that name. Disambiguate them in the database, or change your spreadsheet on line %d" % (row['waterbody'] or str(row['nhdid']), excel_line_number))
+        raise ValidationError("The waterbody '%s' is ambiguous because multiple waterbodies exist in the database with that name. Disambiguate them in the database, or change your spreadsheet on line %d" % (row['waterbody'] or str(row['reachcode']), excel_line_number))
     except Specie.DoesNotExist as e:
         raise ValidationError("The specie '%s' does not exist in the database. You need to create it, or change your spreadsheet on line %d" % (e.specie, excel_line_number))
 
@@ -78,7 +78,7 @@ def _to_python(row, datemode):
     row['substrates'] = values
 
     # convert the waterbody string to a Waterbody object
-    row['waterbody'] = _to_waterbody(row['nhdid'], row['waterbody'])
+    row['waterbody'] = _to_waterbody(row['reachcode'], row['waterbody'])
 
     # convert the specie string to a Specie object
     row['specie'] = _to_specie(row['specie'])
@@ -103,22 +103,22 @@ def _to_substrate(substrate):
         e.substrate = substrate
         raise
 
-def _to_waterbody(nhdid, waterbody):
+def _to_waterbody(reachcode, waterbody):
     """
-    find a Waterbody with a name of `waterbody` or an nhdid of `nhdid`; case
+    find a Waterbody with a name of `waterbody` or an reachcode of `reachcode`; case
     insensitive
     """
     waterbody = waterbody.strip()
-    nhdid = str(nhdid).strip() 
+    reachcode = str(reachcode).strip() 
 
-    if nhdid and waterbody:
-        return Waterbody.objects.get(Q(name__iexact=waterbody) | Q(nhdid__iexact=nhdid))
-    elif nhdid:
-        return Waterbody.objects.get(nhdid__iexact=nhdid)
+    if reachcode and waterbody:
+        return Waterbody.objects.get(Q(name__iexact=waterbody) | Q(reachcode__iexact=reachcode))
+    elif reachcode:
+        return Waterbody.objects.get(reachcode__iexact=reachcode)
     elif waterbody:
         return Waterbody.objects.get(name__iexact=waterbody)
     else:
-        raise ValueError("nhdid and waterbody can't both be falsey")
+        raise ValueError("reachcode and waterbody can't both be falsey")
 
 def _to_specie(specie):
     """find a Specie with a name of `specie`; case insensitive search"""

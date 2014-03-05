@@ -154,7 +154,7 @@ class ObservationRelatedForm(forms.ModelForm):
 class WaterbodyForm(ObservationRelatedForm):
     class Meta:
         model = Waterbody
-        fields = ('name', 'nhdid')
+        fields = ('name', 'reachcode')
 
 class SubstrateForm(ObservationRelatedForm):
     class Meta:

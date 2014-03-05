@@ -32,8 +32,6 @@ class AdminUser(AbstractBaseUser):
     def has_perm(self, perm, obj=None): return True
     def has_module_perms(self, app_label): return True
 
-# The tables and columns in the database are *very* poorly named, so the
-# class name of the models below cannot be used to infer the table name
 
 class MachineNameManager(models.Manager):
     """
@@ -55,8 +53,8 @@ class MachineNameManager(models.Manager):
 
 
 class Specie(models.Model):
-    specie_id = models.AutoField(primary_key=True, db_column="status_id")
-    name = models.CharField(db_column="status_text", max_length=255)
+    specie_id = models.AutoField(primary_key=True, db_column="specie_id")
+    name = models.CharField(db_column="name", max_length=255)
     order_id = models.IntegerField(db_column="order_id", help_text="The order this should appear in on the legend and search form")
     machine_name = models.CharField(db_column="machine_name", max_length=30, help_text="The name used for the map icon")
     is_scientific_name = models.BooleanField(db_column="is_scientific_name", help_text="Determines if italics should be used when displaying on the map")
@@ -64,7 +62,7 @@ class Specie(models.Model):
     objects = MachineNameManager()
 
     class Meta:
-        db_table = 'statuses'
+        db_table = 'specie'
         ordering = ['order_id']
 
     def __unicode__(self):
@@ -72,15 +70,15 @@ class Specie(models.Model):
 
 
 class Substrate(models.Model):
-    substrate_id = models.AutoField(primary_key=True, db_column="type_id")
-    name = models.CharField(db_column="type_name", max_length=255)
+    substrate_id = models.AutoField(primary_key=True, db_column="substrate_id")
+    name = models.CharField(db_column="name", max_length=255)
     order_id = models.IntegerField(db_column="order_id", help_text="The order this should appear in on the legend and search form")
     machine_name = models.CharField(db_column="machine_name", max_length=30, help_text="The name used for the map icon")
 
     objects = MachineNameManager()
 
     class Meta:
-        db_table = 'types'
+        db_table = 'substrate'
         ordering = ['order_id']
 
     def __unicode__(self):
@@ -89,11 +87,11 @@ class Substrate(models.Model):
 
 class Waterbody(models.Model):
     waterbody_id = models.AutoField(primary_key=True, db_column="waterbody_id")
-    name = models.CharField(db_column="waterbody_name", max_length=255)
-    nhdid = models.CharField(db_column="nhdid", max_length=20, verbose_name="NHD ID", blank=True)
+    name = models.CharField(db_column="name", max_length=255)
+    reachcode = models.CharField(db_column="reachcode", max_length=32, blank=True)
 
     class Meta:
-        db_table = 'waterbodies'
+        db_table = 'waterbody'
         ordering = ['name']
 
     def __unicode__(self):
@@ -133,10 +131,10 @@ class User(models.Model):
 
 class Agency(models.Model):
     agency_id = models.AutoField(primary_key=True, db_column="agency_id")
-    name = models.CharField(db_column="agency_name", max_length=255)
+    name = models.CharField(db_column="name", max_length=255)
 
     class Meta:
-        db_table = 'reporting_agencies'
+        db_table = 'agency'
         ordering = ['name']
 
     def __unicode__(self):
@@ -144,12 +142,12 @@ class Agency(models.Model):
 
 
 class ObservationSubstrate(models.Model):
-    substrate_type_id = models.AutoField(db_column="substrate_type_id", primary_key=True)
-    observation = models.ForeignKey('Observation', db_column="substrate_id")
-    substrate = models.ForeignKey('Substrate', db_column="type_id")
+    substrate_type_id = models.AutoField(db_column="observation_substrate_id", primary_key=True)
+    observation = models.ForeignKey('Observation', db_column="observation_id")
+    substrate = models.ForeignKey('Substrate', db_column="substrate_id")
     
     class Meta:
-        db_table = 'substrate_types'
+        db_table = 'observation_substrate'
 
 
 class ObservationManager(models.GeoManager):
@@ -161,20 +159,25 @@ class ObservationManager(models.GeoManager):
         # mapping between the columns in the query, and their name
         keys = ["observation_id", "the_geom", "the_geom_plain", "specie", "substrates", "date_checked", "waterbody", "description", "agency"]
         sql = ["""
-            SELECT 
-                id as observation_id, 
-                st_askml(dv.the_geom) as the_geom, 
-                st_AsEWKT(dv.the_geom) as the_geom_plain,
-                dv.status as status,
-                dv.substrate_type as substrate_type, 
-                dv.date_checked as date_checked,
-                dv.waterbody_name as waterbody, 
-                dv.physical_description as description,
-                dv.agency as agency 
-            FROM 
-                display_view as dv
-            WHERE dv.the_geom IS NOT NULL
-        """]
+            SELECT
+            observation_id,
+            st_askml(the_geom) as the_geom,
+            st_AsEWKT(the_geom) as the_geom_plain,
+            specie.name AS specie,
+            string_agg(substrate.name, ', ') AS substrate_type,
+            date_checked,
+            waterbody.name as waterbody,
+            physical_description as description,
+            agency.name as agency
+            FROM
+            observation
+            INNER JOIN specie USING(specie_id)
+            INNER JOIN waterbody USING(waterbody_id)
+            INNER JOIN agency USING(agency_id)
+            INNER JOIN observation_substrate USING(observation_id)
+            INNER JOIN substrate USING(substrate_id)
+            WHERE the_geom IS NOT NULL
+            """]
         args = []
 
         # the caller can pass in kwargs for the search criteria.
@@ -182,18 +185,18 @@ class ObservationManager(models.GeoManager):
         # necessary arguments to the args array
         if "id" in kwargs:
             args.append(kwargs['id'])
-            sql.append("AND id = %s")
+            sql.append("AND observation_id = %s")
         if "waterbody" in kwargs:
             args.append(kwargs['waterbody'])
-            sql.append("AND waterbody_name = %s")
+            sql.append("AND waterbody.name = %s")
         if "agency" in kwargs:
             args.append(kwargs['agency'])
-            sql.append("AND agency = %s")
+            sql.append("AND agency.name = %s")
         if "species" in kwargs:
             # this is the case where the caller wants to return results that
             # have multiple statuses ORd together using a SQL IN()
             # add the IN clause
-            sql.append("AND dv.status IN(" + (", ".join(["%s" for _ in kwargs['species']])) + ")")
+            sql.append("AND specie.name IN(" + (", ".join(["%s" for _ in kwargs['species']])) + ")")
             # add all the arguments to it
             for specie in kwargs['species']:
                 args.append(specie)
@@ -201,12 +204,23 @@ class ObservationManager(models.GeoManager):
             # this is the case where the caller wants to return results that
             # have multiple statuses ORd together using a SQL IN()
             # add the IN clause
-            sql.append("AND dv.substrate_type IN(" + (", ".join(["%s" for _ in kwargs['substrates']])) + ")")
+            sql.append("AND substrate.name IN(" + (", ".join(["%s" for _ in kwargs['substrates']])) + ")")
             # add all the arguments to it
             for specie in kwargs['substrates']:
                 args.append(specie)
 
         has_scientific_name = set([s.machine_name for s in Specie.objects.filter(is_scientific_name=True)])
+
+        sql.append("""
+            GROUP BY observation_id,
+            st_askml(the_geom),
+            st_AsEWKT(the_geom),
+            specie.name,
+            date_checked,
+            waterbody.name,
+            physical_description,
+            agency.name
+        """)
 
         # construct and execute the sql
         sql = " ".join(sql)
@@ -235,12 +249,12 @@ class ObservationManager(models.GeoManager):
 
 
 class Observation(models.Model):
-    observation_id = models.AutoField(primary_key=True, db_column="substrate_id")
+    observation_id = models.AutoField(primary_key=True, db_column="observation_id")
     # null=true only because it helps on the PublicObservationForm, when a user
     # enters an "other" waterbody. We don't actually want to store null in this
     # column
     waterbody = models.ForeignKey(Waterbody, db_column="waterbody_id", null=True, blank=True)
-    specie = models.ForeignKey(Specie, db_column="status_id")
+    specie = models.ForeignKey(Specie, db_column="specie_id")
     date_checked = models.DateField(db_column="date_checked")
     physical_description = models.TextField()
     # null=true only because it helps on the PublicObservationForm, when a user
@@ -257,7 +271,7 @@ class Observation(models.Model):
     objects = ObservationManager()
 
     class Meta:
-        db_table = 'substrates'
+        db_table = 'observation'
 
     def to_point(self):
         "Convert the geometry of this obversation to a point"
