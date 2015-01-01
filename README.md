@@ -9,12 +9,19 @@ If you run into problems installing psycopg make sure you can execute the
 to your path. You can find the path with `locate pg_config`. On my machine, I
 had to do:
 
-    export PATH=/usr/pgsql-9.2/bin:$PATH
+    export PATH=/usr/pgsql-9.3/bin:$PATH
 
 ## Configure
 
     cp mussels/settings/local.py.template mussels/settings/local.py
     vim mussels/settings/local.py # adjust settings
+
+## PostgreSQL
+
+    createdb mussels;
+    psql mussels;
+    > CREATE EXTENSION postgis;
+    > CREATE EXTENSION postgis_topology;
 
 ## Generate Image
 
