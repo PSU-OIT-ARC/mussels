@@ -12,9 +12,11 @@ class AdminUser(AbstractBaseUser):
     last_name = models.CharField(max_length=30, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True, blank=True)
+    is_superuser = models.BooleanField(default=False, blank=True)
     is_staff = models.BooleanField(default=False, blank=True)
 
     USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     objects = UserManager()
 
@@ -65,7 +67,7 @@ class Specie(models.Model):
         db_table = 'specie'
         ordering = ['order_id']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -81,7 +83,7 @@ class Substrate(models.Model):
         db_table = 'substrate'
         ordering = ['order_id']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -94,7 +96,7 @@ class Waterbody(models.Model):
         db_table = 'waterbody'
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -122,11 +124,11 @@ class User(models.Model):
     class Meta:
         db_table = 'reporter'
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s %s' % (self.first_name, self.last_name)
 
     def name(self):
-        return unicode(self)
+        return str(self)
 
 
 class Agency(models.Model):
@@ -137,7 +139,7 @@ class Agency(models.Model):
         db_table = 'agency'
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
