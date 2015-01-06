@@ -1,5 +1,5 @@
 Django==1.7.1
--e git+https://github.com/mdj2/djangocas.git@6b5dc4c012b287b7e02b5f6336697cb01955915b#egg=djangocas-origin/master
+-e git+https://github.com/mdj2/djangocas.git#egg=djangocas-origin
 psycopg2==2.5.4
 six==1.8.0
 varlet==0.0.6
