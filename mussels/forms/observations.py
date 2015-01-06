@@ -29,7 +29,7 @@ class ObservationImportForm(forms.Form):
         user_cache = {}
 
         for row in self.data:
-            print row
+            print(row)
             ob = Observation(
                 waterbody=row['waterbody'], 
                 specie=row['specie'], 
