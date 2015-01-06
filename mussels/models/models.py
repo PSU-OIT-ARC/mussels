@@ -163,7 +163,7 @@ class ObservationManager(models.GeoManager):
         sql = ["""
             SELECT
             observation_id,
-            st_AsKML(the_geom, 15) as the_geom,
+            st_AsKML(the_geom) as the_geom,
             st_AsEWKT(the_geom) as the_geom_plain,
             specie.name AS specie,
             string_agg(substrate.name, ', ') AS substrate_type,
@@ -215,7 +215,7 @@ class ObservationManager(models.GeoManager):
 
         sql.append("""
             GROUP BY observation_id,
-            ST_AsKML(the_geom, 15),
+            ST_AsKML(the_geom),
             st_AsEWKT(the_geom),
             specie.name,
             date_checked,
