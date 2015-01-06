@@ -11,11 +11,6 @@ had to do:
 
     export PATH=/usr/pgsql-9.3/bin:$PATH
 
-## Configure
-
-    cp mussels/settings/local.py.template mussels/settings/local.py
-    vim mussels/settings/local.py # adjust settings
-
 ## PostgreSQL
 
     createdb mussels;
@@ -27,3 +22,25 @@ had to do:
 
     mkdir static/img/generated
     python generateimages.py
+
+## Database migrations
+
+    make migrate
+
+## Run the server
+
+Varlet will ask you to fill in settings
+
+    make
+
+## Testing and Coverage
+
+Run unit tests with
+
+    make test
+
+Or, to use coverage
+
+    make coverage
+
+and visit 0.0.0.0:8000/htmlcov/index.html
