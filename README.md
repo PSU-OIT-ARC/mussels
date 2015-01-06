@@ -25,6 +25,12 @@ had to do:
 
 ## Database migrations
 
+If you have a database you want to use, you can load it with
+
+    perl path/to/script/postgis_restore.pl database.sql | psql new_database 2>errors.txt
+
+To perform a regular syncb and migrate
+
     make migrate
 
 ## Run the server
@@ -44,3 +50,4 @@ Or, to use coverage
     make coverage
 
 and visit 0.0.0.0:8000/htmlcov/index.html
+
