@@ -3,3 +3,4 @@
 local_settings.py
 local.py
 static/img/generated/
+variables.py
