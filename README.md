@@ -25,7 +25,8 @@ had to do:
 
 ## Database migrations
 
-If you have a database you want to use, you can load it with
+If you have a database you want to use (e.g. database.sql), you can load it by 
+locating the postgis_restore.pl script and calling
 
     perl path/to/script/postgis_restore.pl database.sql | psql new_database 2>errors.txt
 
