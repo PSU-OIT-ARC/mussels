@@ -1,0 +1,72 @@
+[
+{
+    "pk": 0,
+    "model": "models.specie",
+    "fields": {
+        "is_scientific_name": false,
+        "name": "Unknown",
+        "machine_name": "unknown",
+        "order_id": 50
+    }
+},
+{
+    "pk": 1,
+    "model": "models.specie",
+    "fields": {
+        "is_scientific_name": false,
+        "name": "non detect",
+        "machine_name": "non",
+        "order_id": 40
+    }
+},
+{
+    "pk": 2,
+    "model": "models.specie",
+    "fields": {
+        "is_scientific_name": false,
+        "name": "results pending",
+        "machine_name": "pending",
+        "order_id": 60
+    }
+},
+{
+    "pk": 3,
+    "model": "models.specie",
+    "fields": {
+        "is_scientific_name": true,
+        "name": "Dreissena polymorpha",
+        "machine_name": "dpoly",
+        "order_id": 20
+    }
+},
+{
+    "pk": 4,
+    "model": "models.specie",
+    "fields": {
+        "is_scientific_name": true,
+        "name": "Dreissena r. bugensis",
+        "machine_name": "dbug",
+        "order_id": 10
+    }
+},
+{
+    "pk": 5,
+    "model": "models.specie",
+    "fields": {
+        "is_scientific_name": true,
+        "name": "D. polymorpha and D. r. bugensis",
+        "machine_name": "both",
+        "order_id": 0
+    }
+},
+{
+    "pk": 6,
+    "model": "models.specie",
+    "fields": {
+        "is_scientific_name": true,
+        "name": "Corbicula fluminea",
+        "machine_name": "carb",
+        "order_id": 30
+    }
+}
+]

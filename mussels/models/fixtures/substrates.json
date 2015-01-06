@@ -1,0 +1,65 @@
+[
+{
+    "model": "models.substrate",
+    "fields": {
+        "machine_name": "artificial",
+        "name": "Artificial",
+        "order_id": 20
+    },
+    "pk": 1
+},
+{
+    "model": "models.substrate",
+    "fields": {
+        "machine_name": "natural",
+        "name": "Natural",
+        "order_id": 10
+    },
+    "pk": 2
+},
+{
+    "model": "models.substrate",
+    "fields": {
+        "machine_name": "plankton",
+        "name": "Plankton",
+        "order_id": 30
+    },
+    "pk": 3
+},
+{
+    "model": "models.substrate",
+    "fields": {
+        "machine_name": "scuba",
+        "name": "SCUBA",
+        "order_id": 40
+    },
+    "pk": 4
+},
+{
+    "model": "models.substrate",
+    "fields": {
+        "machine_name": "rov",
+        "name": "ROV",
+        "order_id": 50
+    },
+    "pk": 5
+},
+{
+    "model": "models.substrate",
+    "fields": {
+        "machine_name": "other",
+        "name": "Other",
+        "order_id": 60
+    },
+    "pk": 6
+},
+{
+    "model": "models.substrate",
+    "fields": {
+        "machine_name": "unspecified",
+        "name": "Unspecified",
+        "order_id": 70
+    },
+    "pk": 7
+}
+]
