@@ -8,7 +8,12 @@ Generate all the possible combinations of substrates, and create an icon for
 that combination.
 """
 
-os.chdir("static/img/kml_icons")
+os.chdir("mussels/static/img/kml_icons")
+try:
+    os.mkdir("../generated")
+except FileExistsError as e:
+    # the dir already exists
+    pass
 
 def powerset(iterable):
     s = list(iterable)
@@ -31,5 +36,3 @@ for mussel in mussels:
             cmd.append(filename)
             print(" ".join(cmd))
             subprocess.call(cmd)
-
-
