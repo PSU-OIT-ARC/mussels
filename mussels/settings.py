@@ -3,8 +3,16 @@ from fnmatch import fnmatch
 from django.conf import global_settings
 from varlet import variable
 
-PROJECT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "."))
-HOME_DIR = os.path.normpath(os.path.join(PROJECT_DIR, '.'))
+PROJECT_DIR = os.path.dirname(__file__)
+HOME_DIR = os.path.normpath(os.path.join(PROJECT_DIR, '../'))
+
+DEBUG = variable("DEBUG", False)
+TEMPLATE_DEBUG = DEBUG
+
+# [('Your Name', 'your_email@example.com')]
+ADMINS = variable("ADMINS", [])
+
+MANAGERS = ADMINS
 
 SERVER_EMAIL = 'django@pdx.edu'
 
@@ -42,23 +50,23 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = False
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = False
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = variable("MEDIA_ROOT", '')
+MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = variable("MEDIA_URL", '')
+MEDIA_URL = ''
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -68,7 +76,7 @@ STATIC_ROOT = os.path.join(HOME_DIR, "static")
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = "/static"
+STATIC_URL = "/static/"
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -115,65 +123,30 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'mussels',
+    'mussels.models',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
-}
-
-DEBUG = variable("DEBUG", True)
-TEMPLATE_DEBUG = DEBUG
-
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
-
-MANAGERS = ADMINS
-
 DATABASES = {
     'default': {
-        'ENGINE': variable('DB_ENGINE','django.contrib.gis.db.backends.postgis'), # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': variable("DB_NAME",''),                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': variable("DB_USER",''),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        # the Atlas of Oregon Lakes (AOL), and this mussels project share a
+        # database (AOL uses the public schema, mussels uses the mussels
+        # schema), but during development, you can use an isolated DB
+        'NAME': variable("DB_NAME", 'mussels'),
+        'USER': variable("DB_USER", 'root'),
         'PASSWORD': variable("DB_PASSWORD", ''),
-        'HOST': variable("DB_HOST",''),                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': variable("DB_PORT",''),                      # Set to empty string for default.
+        'HOST': variable("DB_HOST", ''),
+        'PORT': '',
         'OPTIONS': {
-            'options': variable("DB_OPTIONS",'-c search_path=mussels,public'),
+            # add the mussels schema to the search path, which is useful in production
+            'options': '-c search_path=mussels,public',
         }
     }
 }
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = variable("SECRET_KEY", os.urandom(64).decode("latin1")) 
+SECRET_KEY = variable("SECRET_KEY", os.urandom(64).decode("latin1"))
