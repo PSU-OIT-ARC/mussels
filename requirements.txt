@@ -1,5 +1,6 @@
-Django<=1.8
--e git+https://github.com/mdj2/djangocas.git#egg=djangocas-1.0.0-py2.6-dev
-psycopg2
-#wsgiref==0.1.2
+Django==1.7.1
+-e git+https://github.com/mdj2/djangocas.git@6b5dc4c012b287b7e02b5f6336697cb01955915b#egg=djangocas-origin/master
+psycopg2==2.5.4
+six==1.8.0
+varlet==0.0.6
 xlrd==0.9.2
