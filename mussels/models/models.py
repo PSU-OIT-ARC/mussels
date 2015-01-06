@@ -57,7 +57,7 @@ class Specie(models.Model):
     name = models.CharField(db_column="name", max_length=255)
     order_id = models.IntegerField(db_column="order_id", help_text="The order this should appear in on the legend and search form")
     machine_name = models.CharField(db_column="machine_name", max_length=30, help_text="The name used for the map icon")
-    is_scientific_name = models.BooleanField(db_column="is_scientific_name", help_text="Determines if italics should be used when displaying on the map")
+    is_scientific_name = models.BooleanField(db_column="is_scientific_name", help_text="Determines if italics should be used when displaying on the map", default=False)
 
     objects = MachineNameManager()
 
