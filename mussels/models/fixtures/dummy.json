@@ -1,0 +1,72 @@
+[
+{
+    "pk": 1,
+    "fields": {
+        "name": "Matt Johnson"
+    },
+    "model": "models.agency"
+},
+{
+    "fields": {
+        "reachcode": "",
+        "name": "Vancouver Lake"
+    },
+    "pk": 1,
+    "model": "models.waterbody"
+},
+{
+    "pk": 1,
+    "fields": {
+        "username": "",
+        "email": "foobar@mailinator.com",
+        "winter_hold_stop": "",
+        "reminder": "",
+        "city": "",
+        "need_new_mesh": false,
+        "state": "",
+        "winter_hold_start": "",
+        "address2": "",
+        "address1": "",
+        "admin_notes": "",
+        "zip": "",
+        "last_name": "Doe",
+        "first_name": "John",
+        "is_active": true,
+        "phone1": "",
+        "phone2": "",
+        "title": ""
+    },
+    "model": "models.user"
+},
+{
+    "fields": {
+        "waterbody": 1,
+        "agency": 1,
+        "date_checked": "2012-12-12",
+        "is_approved": true,
+        "clr_substrate_id": 0,
+        "physical_description": "Gross",
+        "user": 1,
+        "geom": "POINT (-122.7210000000000036 45.6779000000000011)",
+        "specie": 3
+    },
+    "model": "models.observation",
+    "pk": 1
+},
+{
+    "pk": 1,
+    "model": "models.observationsubstrate",
+    "fields": {
+        "observation": 1,
+        "substrate": 1
+    }
+},
+{
+    "pk": 2,
+    "model": "models.observationsubstrate",
+    "fields": {
+        "observation": 1,
+        "substrate": 3
+    }
+}
+]

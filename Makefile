@@ -4,26 +4,22 @@
 		run \
 		test \
 		coverage \
-		
+
 .DEFAULT_GOAL := run
 
-PROJECT_NAME = mussels
-VENV_DIR ?= .env
-BIN_DIR = $(VENV_DIR)/bin
-PYTHON = $(BIN_DIR)/python
-PIP = $(PYTHON)
+export PATH:=.env/bin:$(PATH):/usr/pgsql-9.3/bin:/usr/pgsql-9.1/bin
+PYTHON=python3
 MANAGE = $(PYTHON) manage.py
-SETTINGS_MODULE = $(DJANGO_SETTINGS_MODULE)
-ifeq ($(strip $(SETTINGS_MODULE)),)
-SETTINGS_MODULE = $(PROJECT_NAME).settings
-endif
 
-install:
-	$(PIP) install -r requirements.txt
-
-migrate:
-	$(MANAGE) syncdb
+install: .env
+	createdb mussels
+	psql -c "CREATE EXTENSION postgis" mussels
+	python generateimages.py
 	$(MANAGE) migrate
+	$(MANAGE) loaddata species.json substrates.json
+	$(MANAGE) loaddata dummy.json
+	echo "Use your ODIN username for your username!"
+	$(MANAGE) createsuperuser
 
 clean:
 	find . -iname "*.pyc" -delete
@@ -32,13 +28,10 @@ clean:
 
 host ?= 0.0.0.0
 port ?= 8000
-run:
+run: .env
 	$(MANAGE) runserver $(host):$(port)
 
-test:
-	$(MANAGE) test $(test)
-
-# go to '0.0.0.0:8000/htmlcov/index.html' to view coverage
-coverage:
-	coverage run ./manage.py test $(test) && coverage html
-
+.env:
+	$(PYTHON) -m venv .env
+	curl https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py | python
+	pip install -r requirements.txt
