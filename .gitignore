@@ -3,4 +3,6 @@
 local_settings.py
 local.py
 static/img/generated/
+mussels/static/
 variables.py
+static/gis/
