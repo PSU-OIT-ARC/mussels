@@ -29,7 +29,7 @@ for mussel in mussels:
             cmd = ['convert', '-background', 'transparent', '-flatten']
             cmd.extend(files)
             cmd.append(filename)
-            print " ".join(cmd)
+            print(" ".join(cmd))
             subprocess.call(cmd)
 
 
