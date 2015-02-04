@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-from itertools import combinations, chain
-import subprocess
-import os
-import shutil
 """
 Generate all the possible combinations of substrates, and create an icon for
 that combination.
 """
+from itertools import combinations, chain
+import subprocess
+import os
+import shutil
 
 os.chdir("mussels/static/img/kml_icons")
 try:

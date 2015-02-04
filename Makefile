@@ -11,7 +11,7 @@ NO_COLOR=\x1b[0m
 
 # completely wipes out the database and environment and rebuilds it and loads some dummy data
 init:
-	#rm -rf $(VENV_DIR)
+	rm -rf $(VENV_DIR)
 	@$(MAKE) $(VENV_DIR)
 	dropdb mussels || true
 	createdb mussels
