@@ -101,8 +101,6 @@ AUTHENTICATION_BACKENDS = (
     'djangocas.backends.CASBackend',
 )
 
-FILE_UPLOAD_HANDLERS = ("django.core.files.uploadhandler.TemporaryFileUploadHandler",)
-
 ROOT_URLCONF = 'mussels.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -130,6 +128,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
+# supress a warning
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 DATABASES = {
