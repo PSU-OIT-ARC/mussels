@@ -3,7 +3,7 @@
 <a href="{% url 'observations-edit-related' model %}">Add</a>
 <ol>
     {% for object in objects %}
-        <li><a href="{% url 'observations-edit-related' model object.pk %}">{{ object.name }}</a></li>
+        <li><a href="{% url 'observations-edit-related' model object.pk %}">{{ object.name|default:"_" }}</a></li>
     {% endfor %}
 </ol>
 {% endblock %}
