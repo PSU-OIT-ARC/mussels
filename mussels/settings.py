@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'arcutils',
     'mussels.models',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
@@ -148,6 +149,8 @@ DATABASES = {
         }
     }
 }
+
+LOGGING_CONFIG = 'arcutils.logging.basic'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = variable("SECRET_KEY", os.urandom(64).decode("latin1"))

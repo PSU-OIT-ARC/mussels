@@ -3,3 +3,4 @@ Django<1.8
 psycopg2==2.5.4
 varlet
 xlrd==0.9.2
+-e git://github.com/PSU-OIT-ARC/django-arcutils.git#egg=django-arcutils
